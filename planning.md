@@ -1,2 +1,2 @@
 
-![Wireframes](/mydraft.cc%20-%20Diagram%20cb5ij0jgpo2fu3komflg.html)
+- Home Page will show one button for submission and a search box
