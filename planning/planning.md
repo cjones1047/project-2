@@ -1,0 +1,26 @@
+
+- App will be a toolbox for anyone who wants to research what stocks to buy in the stock market
+    - Many apps to assist with stock-picking exist like this one today, but this one will have more character by lightly nudging a user towards a time-tested approach to stock-picking called "value-investing"
+    - Will be almost entirely quantitative with a major focus on how any given company in the stock market has historically behaved based on its financial statements. 
+    - The only qualitative bits of information will be a description of how a company makes its money
+        - This description will be taken directly from the business summary section of the company's most recent 10-K
+- THEME WILL BE BLACK AND WHITE WITH GRAYSCALE AND ONLY ONE COLOR IS GOING TO BE ALLOWED IN THE ENTIRE APP
+    - Only color allowed will be some form of light blue
+    - I am NOT getting caught up in making this look as pretty as possible.
+    - I feel as though endless style tweaking is a rabbit hole I went down on my last project which negatively affected functionality
+    - I need this to work smoothely and have complete functionality, which will be quite a stretch in and of itself
+- App's title at top of navbar oriented down the left-hand side of the screen
+- Navbar is oriented down the left-hand side of the page so that each element can be more explicitly named and have it's own row
+    - Navbar will also be collapsible at any given point in time
+    - Navbar being collapsible as an option promotes a full-screen viewing experience especially useful in viewing spreadsheets that hold years of annual report information on any given company
+- Navbar items:
+    - [Insert App's Title]
+    - More about our way
+    - My Stocks [only shows up after user logs in]
+    - Search any stock
+    - Backtesting
+- Home screen
+    - "Stocks are scary. Unless you look at them the right way. [Insert Name of App] will show you our way."
+    - "Click on any menu item inside the bar to the left to get started."
+- Stretch goals
+    - 
