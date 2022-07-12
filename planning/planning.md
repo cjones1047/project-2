@@ -62,6 +62,9 @@
                     - Every CAGR column will be color coordinated (Green if > 10%, Yellow-Green if 7 to 10%, Yellow if 4 to 7%, and Red if < 4% since a company growing at less than that should be considered a risky investment)
                     - Some rows may have data like company expenses be negative which is totally ok, don't know if I want to color them red yet since I don't want anyone to think "danger" just because a company has expenses
                 ![](/planning/wireframes/show-page.png)
+    - My Portfolios
+        - Looks like the my-stocks page just without the logo present on each individual stock on my-stocks page
+        ![](/planning/wireframes/my-portfolios.png)
     - Search any stock
         - Will show a search bar upon navigation to page (a form) to enter any company on the stock market's name or ticker (like Apple's ticker is AAPL)
             - STRETCH GOAL: search bar will suggest a stock's ticker and name based on every character a user inputs into the form input
@@ -81,3 +84,51 @@
 
 ## Entity Relationship Diagram
 ![](/planning/wireframes/erd.png)
+
+## User Stories
+
+1. User navigates to our-way page to see how we view stocks
+2. User uses menu situated inside of side-bar on left to get to most pages
+3. User can navigate to portfolio show page to add a stock to a portfolio
+4. User can navigate to portfolio show page to remove a stock from a portfolio
+5. User can view into on an individual stock to check last stock price
+6. User can view table of company's financial records to evaluate company
+7. User can backtest an entire portfolio to see how it would've done in the past had they bought it sooner
+8. User can see the market capitalization of any stock to see how much it would cost to buy the whole company
+9. User can educate themselves on how to generally value a company by reading our-way page
+10. User can make multiple portfolios to backtest different groups of stocks
+11. User can view a stock's cash flow ratios to compare two stocks to each other to see which one is more valuable at the moment
+12. User can sign up and log in to pick up their backtesting where they left off in the previous session
+13. User doesn't have to log in and can just view metrics on any stock on the market
+14. User can delete any stock that is no longer listed on the market
+15. User can see a company's profits on any given year in the last decade to evaluate a company's earnings growth over time
+
+## Route Table
+
+|   NAME   |     PATH       |   HTTP VERB     |            PURPOSE                   |
+|----------|----------------|-----------------|--------------------------------------| 
+| Index    | /title/our-way      |       GET       | Displays our-way page           |
+
+| New      | /title/my-portfolios/new|       GET       | Shows form for new portfolio creation|
+
+| Show     | /title/my-portfolios|       GET       | Shows my portfolios             |
+
+| Show     | /title/my-stocks    |     GET         | Shows my stocks                 |
+
+| Show     | /title/my-portfolios/:id|       GET        | Shows one portfolio from my-portfolios|
+
+| Show     | /title/my-stocks/:id|       GET       | Shows one stock from my-stocks or from an individual portfolio|
+
+| Show     | /title/backtesting|       GET         | Shows backtesting page          |
+
+| Edit     | /title/my-portfolios/:id/edit |       GET        | Shows edit page for one portfolio where you can add or delete stocks from a portfolio|
+
+| Create   | /title/my-stocks    |      POST       | Adds a new stock to the my-stocks page from the search-stocks page|
+
+| Create   | /title/my-portfolios|      POST       | Adds a new portfolio to the my-portfolios page from the my-portfolios/new page|
+
+| Destroy  | /title/my-portfolios/:id|      DELETE     | Deletes an entire portfolio|
+
+| Destroy  | /title/my-stocks/:id      DELETE      | Deletes a stock from my-stocks|
+
+| Update   | /title/my-portfolios/:id|      PUT        | Adds or removes a stock from a single portfolio|
