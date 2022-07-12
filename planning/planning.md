@@ -108,27 +108,15 @@
 |   NAME   |     PATH       |   HTTP VERB     |            PURPOSE                   |
 |----------|----------------|-----------------|--------------------------------------| 
 | Index    | /title/our-way      |       GET       | Displays our-way page           |
-
 | New      | /title/my-portfolios/new |       GET       | Shows form for new portfolio creation |
-
 | Show     | /title/my-portfolios |       GET       | Shows my portfolios             |
-
 | Show     | /title/my-stocks    |     GET         | Shows my stocks                 |
-
 | Show     | /title/my-portfolios/:id |       GET        | Shows one portfolio from my-portfolios |
-
 | Show     | /title/my-stocks/:id |       GET       | Shows one stock from my-stocks or from an individual portfolio |
-
 | Show     | /title/backtesting |       GET         | Shows backtesting page          |
-
 | Edit     | /title/my-portfolios/:id/edit |       GET        | Shows edit page for one portfolio where you can add or delete stocks from a portfolio |
-
 | Create   | /title/my-stocks    |      POST       | Adds a new stock to the my-stocks page from the search-stocks page |
-
 | Create   | /title/my-portfolios |      POST       | Adds a new portfolio to the my-portfolios page from the my-portfolios/new page |
-
 | Destroy  | /title/my-portfolios/:id |      DELETE     | Deletes an entire portfolio |
-
-| Destroy  | /title/my-stocks/:id      DELETE      | Deletes a stock from my-stocks |
-
+| Destroy  | /title/my-stocks/:id |     DELETE      | Deletes a stock from my-stocks |
 | Update   | /title/my-portfolios/:id |      PUT        | Adds or removes a stock from a single portfolio |
