@@ -32,12 +32,52 @@
     - My Stocks [only shows up after user logs in, otherwise shows default "seed" stocks that we recommend]
         - Each stock will show up as a bootstrapped card with the name of a company, the company's logo (if available), a short decription of a company (only a sentence or two), and a button that says "View" which will submit a get request for a "show" (show.liquid) page
         ![](/planning/wireframes/my-stocks.png)
-        - Show page ...
+        - Show page will include a wealth of data:
+            - Button for "Remove From My Stocks" in the upper-right-hand corner of the screen
+            - Stock's name and ticker
+            - Unordered list of which appear from a user standpoint to be key: value pairs pulled from the company's most recent 10-Q (quarterly report), including but not limited to (STRETCH GOAL: hovering over 'keys' will show an info box describing the metric you are hovering over, since I can't even remember what all these metrics mean or how they are calculated all the time):
+                - Description (more thorough than on "My Stocks" but still pulled from company's most recent 10-K): [string]
+                - Last close: [number]
+                - Market Capitalization : [number]
+                - Trading Volume After Last Close: [number]
+                - Dividend Yield [number]
+                - Earnings Per Share: [number]
+                - Price To Earnings Ratio: [number]
+                - Free Cash Flow Per Share: [number]
+                - Price to FCF Ratio: [number]
+                - etc....
+            - A table with three hyperlinks at the top (maybe built into the top row of the table to look like a navbar?) saying "Income Statement", "Balance Sheet", and "Cash Flow Statement"
+                - This one table is the meat and potatoes of the entire app to me
+                - This table can switch between viewing a company's Income Statement (selected when opening show page by default), Balance Sheet, or Cash Flow Statement by switching on each different hyperlink in the top row of the table
+                - The second row of the table will be a list of column headers to show the last 10 years of annual reports from (left to right) oldest to newest with 6 additional columns appended to the end of the most recent year's row displaying headers of (again, left to right):
+                    - 1) Last 12 Months (compiled using a company's last 4 10-Qs or 'quarterly reports')
+                        - Important that the last 12 months of a company's reported numbers are relatively in-line with the last annual report or 10-K's numbers
+                        - If they are not, that alludes to a company possibly sprucing up their annual reports too much
+                    - 2) 10YrCAGR (Compounded Annual Growth Rate)
+                    - 3) 8YrCAGR
+                    - 4) 6YrCAGR
+                    - 5) 4YrCAGR
+                    - 6) 2YrCAGR
+                - Second row and every row after it will have a total of 16 columns, and 
+                    - Every CAGR column will be color coordinated (Green if > 10%, Yellow-Green if 7 to 10%, Yellow if 4 to 7%, and Red if < 4% since a company growing at less than that should be considered a risky investment)
+                    - Some rows may have data like company expenses be negative which is totally ok, don't know if I want to color them red yet since I don't want anyone to think "danger" just because a company has expenses
+                ![](/planning/wireframes/show-page.png)
     - Search any stock
+        - Will show a search bar upon navigation to page (a form) to enter any company on the stock market's name or ticker (like Apple's ticker is AAPL)
+            - STRETCH GOAL: search bar will suggest a stock's ticker and name based on every character a user inputs into the form input
+        - Just a text input field and a submit button to go with it
+        ![](/planning/wireframes/search-page.png)
+        - After entering a stock's name or ticker, you will just go to the same 'show' page detailed above EXCEPT:
+            - Button for "Add to My Stocks" in the upper-right-hand corner of the screen is changed to say "Remove From My Stocks" based on whether you already added this stock to your "My Stocks" or not
     - Backtesting
+        - Takes the company's listed in "My Stocks" and with a form with just 2 inputs, shows how your stocks would have done between the dates specified in each input field
+        ![](/planning/wireframes/backtesting-page.png)
     - [login status]
         - if not logged in, will show "Log In" followed by "Sign Up" to give new users a chance to sign up and give old users a chance to log back in
-        - if logged in, will just show the user's username
-- Stretch goals
+        - if logged in, will show the user's username followed by "Log Out"
+- More stretch goals:
     - Have a stock price chart provide a render animation over the backtesting time period selected
+    - Have it somehow show up nicely on a phone, even with giant tables and all
 
+## Entity Relationship Diagram
+![](/planning/wireframes/erd.png)
