@@ -1,0 +1,29 @@
+nav {
+    height: 80px;
+}
+
+.container-md {
+    margin-top: 120px;
+}
+
+.navbar-brand {
+    margin-left: 30px;
+    margin-right: 50px;
+}
+
+.navbar-nav {
+    margin-right: 30px;
+}
+
+.navbar-toggler {
+    margin-right: 30px;
+}
+
+#our-way {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+p {
+    text-indent: 30px;
+}

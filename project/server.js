@@ -13,7 +13,7 @@ const methodOverride = require('method-override')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
 
-const navRoutes = require('.controller/nav_routes.js')
+const navRoutes = require('./controller/nav_routes.js')
 const stockRoutes = require('./controller/stock_routes.js')
 const portfolioRoutes = require('./controller/portfolio_routes.js')
 const userRoutes = require('./controller/user_routes.js')
@@ -52,11 +52,11 @@ app.use(
 // middleware so all of navRoutes will have '/title' prepended
 app.use('/title', navRoutes)
 
-// middleware so all of stockRoutes will have '/title/stocks' prepended
-app.use('/title/stocks', stockRoutes)
+// // middleware so all of stockRoutes will have '/title/stocks' prepended
+// app.use('/title/stocks', stockRoutes)
 
-// middleware so all of portfolioRoutes will have '/title/portfolios' prepended
-app.use('/title/portfolios', portfolioRoutes)
+// // middleware so all of portfolioRoutes will have '/title/portfolios' prepended
+// app.use('/title/portfolios', portfolioRoutes)
 
 // middleware so all of userRoutes will have '/users' prepended
 app.use('/users', userRoutes)
