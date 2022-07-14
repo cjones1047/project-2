@@ -52,8 +52,8 @@ app.use(
 // middleware so all of navRoutes will have '/title' prepended
 app.use('/title', navRoutes)
 
-// // middleware so all of stockRoutes will have '/title/stocks' prepended
-// app.use('/title/stocks', stockRoutes)
+// middleware so all of stockRoutes will have '/title/stocks' prepended
+app.use('/title/stocks', stockRoutes)
 
 // // middleware so all of portfolioRoutes will have '/title/portfolios' prepended
 // app.use('/title/portfolios', portfolioRoutes)
