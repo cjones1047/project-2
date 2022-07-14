@@ -12,25 +12,26 @@ require('dotenv').config()
 router.put('/searchedStock', (req, res) => {
     const searchedStock = req.body.stock
 
-    const options = {
-        method: 'POST',
-        headers: {
-            'content-type': 'text/plain',
-            'X-RapidAPI-Key': 'f398cfef5fmsh05e39c9649621e0p1dde23jsn0161f333b079',
-            'X-RapidAPI-Host': 'hotstoks-sql-finance.p.rapidapi.com'
-        },
-        body: `"SELECT * FROM stocks WHERE symbol in ('${searchedStock}') ORDER BY price_change_percent_1m DESC"`
-    };
+    const fmpKey = process.env.FMP_API_KEY
+    const quickfsKey = process.env.QUICKFS_API_KEY
     
-    fetch('https://hotstoks-sql-finance.p.rapidapi.com/query', options)
+    fetch(`https://public-api.quickfs.net/v1/data/all-data/${searchedStock}:US?api_key=${quickfsKey}`)
         .then(response => response.json())
         .then(response => {
-            console.log(response)
-            res.render('title/show-stock.liquid', { thisStock : response })
+            // console.log(response)
+            thisStockData(response.data)
+            res.send(response)
+            // res.render('title/show-stock.liquid', { thisStock : response })
         })
         .catch(err => console.error(err));
 })
 
+///////////////////////////////////////////////////
+function thisStockData (thisData) {
+    console.log(thisData.exchange)
+    console.log(thisData.metadata.name)
+    console.log(thisData.exchange)
+}
 ///////////////////////////////////////////////////
 
 module.exports = router
