@@ -1,5 +1,5 @@
 const express = require('express')
-const puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer-extra');
 // making a router
 const router = express.Router()
 // this allows us to load our env variables
@@ -19,12 +19,23 @@ router.put('/searchedStock', (req, res) => {
     async function scrapeCurrentPrice(priceUrl) {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
+
         await page.goto(priceUrl);
 
-        await page.waitForXPath('/html/body/div[1]/div/div/div[1]/div/div[2]/div/div/div[6]/div/div/div/div[3]/div[1]/div/fin-streamer[1]/span');
-        const [element1] = await page.$x('/html/body/div[1]/div/div/div[1]/div/div[2]/div/div/div[6]/div/div/div/div[3]/div[1]/div/fin-streamer[1]/span');
-        const text1 = await element1.getProperty('textContent');
-        const sharePrice = await text1.jsonValue();
+        //identify element with attribute selector
+        const el1 = await page.$("fin-streamer[class='Fw(b) Fz(36px) Mb(-4px) D(ib)']")
+        //obtain text
+        const el1Text = await (await el1.getProperty('textContent')).jsonValue()
+        console.log("Obtained text is: " + el1Text)
+
+        //identify element with attribute selector
+        const el2 = await page.$("table[class='W(100%) M(0)']")
+        //obtain text
+        const el2Text = await (await el2.getProperty('textContent')).jsonValue()
+        console.log("Obtained table is: " + el2Text)
+
+        const sharePrice = el1Text
+        const priceHx = el2text
 
         browser.close()
 
@@ -38,13 +49,14 @@ router.put('/searchedStock', (req, res) => {
                     ${stockExchange}
                     ${stockName}
                     ${sharePrice}
+                    ${priceHx}
                 `)
                 // res.render('title/show-stock.liquid', { thisStock : response })
             })
             .catch(err => console.error(err));
 
     }
-    scrapeCurrentPrice(`https://finance.yahoo.com/quote/${searchedStock}/history?period1=1137196800&period2=1518566400&interval=1d&filter=history&frequency=1d&includeAdjustedClose=true`)
+    scrapeCurrentPrice(`https://finance.yahoo.com/quote/${searchedStock}/history?p=MU`)
 })
 
 ///////////////////////////////////////////////////
