@@ -28,14 +28,15 @@ router.put('/searchedStock', (req, res) => {
         const el1Text = await (await el1.getProperty('textContent')).jsonValue()
         console.log("Obtained text is: " + el1Text)
 
-        //identify element with attribute selector
-        const el2 = await page.$("table[class='W(100%) M(0)']")
-        //obtain text
-        const el2Text = await (await el2.getProperty('textContent')).jsonValue()
-        console.log("Obtained table is: " + el2Text)
-
         const sharePrice = el1Text
-        const priceHx = el2text
+
+        // //identify element with attribute selector
+        // const el2 = await page.$("table[class='W(100%) M(0)']")
+        // //obtain text
+        // const el2Text = await (await el2.getProperty('textContent')).jsonValue()
+        // console.log("Obtained table is: " + el2Text)
+        
+        // const priceHx = el2Text (USE priceHx AS TEMPLATE LITERAL FARTHER DOWN)
 
         browser.close()
 
@@ -49,7 +50,6 @@ router.put('/searchedStock', (req, res) => {
                     ${stockExchange}
                     ${stockName}
                     ${sharePrice}
-                    ${priceHx}
                 `)
                 // res.render('title/show-stock.liquid', { thisStock : response })
             })
