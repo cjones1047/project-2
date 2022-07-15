@@ -44,19 +44,29 @@ router.put('/searchedStock', (req, res) => {
             .then(response => response.json())
             .then(response => {
                 // console.log(response)
-                const stockExchange = response.data.exchange
-                const stockName = response.data.metadata.name
+
+                const annualData = response.data.financials.annual
+                const ttmData = response.data.financials.ttm
+                const metaData = response.data.metadata
+
+                // make a 'column headers' array for top row of table
+                    // First column: nothing due to being all row titles below it, next 10 column headers: just 10 most recent years, then 1 column for: TTM, and 5 columns for: 10yrCAGR, 7yrCAGR, 5yrCAGR, 3yrCAGR, Growth in TTM
+                    // Total: 17 columns
+                // make a separate array for every subsequent row of the table with following format:
+                    // 1 index for row title, 10 indices for 10 years of annual metrics, 1 indice for TTM metric of each column, and 5 more columns for each CAGR of row with column titles above (have to run math formulas for last 5 columns)
+                    // CAGR % formula: (((recent year/oldest year)^1/# of years)*100)-100
+                // this way ^^ you can manipulate the data for each row using array methods and math functions as well
+
                 res.send(`
-                    ${stockExchange}
-                    ${stockName}
                     ${sharePrice}
                 `)
+
                 // res.render('title/show-stock.liquid', { thisStock : response })
             })
             .catch(err => console.error(err));
 
     }
-    scrapeCurrentPrice(`https://finance.yahoo.com/quote/${searchedStock}/history?p=MU`)
+    scrapeCurrentPrice(`https://finance.yahoo.com/quote/${searchedStock}/history?p=${searchedStock}`)
 })
 
 ///////////////////////////////////////////////////
