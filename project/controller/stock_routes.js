@@ -62,22 +62,67 @@ router.put('/searchedStock', (req, res) => {
                         Math.abs(Number(bigNum)) >= 1.0e3
                         ? sign * (Math.abs(Number(bigNum)) / 1.0e3) + "K"
                         : Math.abs(Number(bigNum));
-                  }
+                }
+
+                function calcCAGR (firstDatum, lastDatum, years) {
+                    const ratio = firstDatum/lastDatum
+                    const factor = ratio**(1/years)
+                    const percent = (factor*100)-100
+                    return (percent.toFixed(1))
+                }
 
                 // make a 'column headers' array for top row of table
                     // First column: nothing due to being all row titles below it, next 10 column headers: just 10 most recent years, then 1 column for: TTM, and 5 columns for: 10yrCAGR, 7yrCAGR, 5yrCAGR, 3yrCAGR, Growth in TTM
                     // Total: 17 columns
                 // make a separate array for every subsequent row of the table with following format:
-                    // 1 index for row title, 10 indices for 10 years of annual metrics, 1 indice for TTM metric of each column, and 5 more columns for each CAGR of row with column titles above (have to run math formulas for last 5 columns)
+                    // 1 index for row title, 10 indices for 10 years of annual metrics, 1 indice for TTM metric of each column (if applicable), and 5 more columns for each CAGR of row with column titles above (have to run math formulas for last 5 columns, also only done if applicable)
                     // CAGR % formula: (((recent year/oldest year)^1/# of years)*100)-100
                     // Row headers:
-                        // Shares
-                    const sharesRow = ['Shares', annualData.shares_basic.slice(-10).flatMap(x => shortenBigNum(x)), 'NA', 'NA', 'NA', 'NA', 'NA']
+                        // Shares, Revenue ($), Earnings ($), Equity ($), Cash Flow from Operations ($), Free Cash Flow ($), Long-Term Debt ($), Short-Term Debt ($), Return on Equity (%), Return of Invested Capital (%)
+                    const sharesHeader = ['Shares']
+                    const sharesBasicData = annualData.shares_basic.slice(-10)
+                    const sharesRow = sharesHeader.concat(sharesBasicData.flatMap(x => shortenBigNum(x)), 'NA')
                 // this way ^^ you can manipulate the data for each row using array methods and math functions as well
-
-                res.send(`
-                    ${sharesRow}
-                `)
+                
+                const makeTableData = () => {
+                    for (const datum in annualData) {
+                        if(datum == "shares_basic") {
+                            const sharesRow = ['Shares']
+                            annualData.shares_basic = sharesRow.concat(
+                                annualData.shares_basic.slice(-10).flatMap(x => shortenBigNum(x)),
+                                shortenBigNum(ttmData.shares_basic),
+                                calcCAGR(
+                                        annualData.shares_basic[annualData.shares_basic.length-1], 
+                                        annualData.shares_basic[annualData.shares_basic.length-10],
+                                        10
+                                    ),
+                                calcCAGR(
+                                    annualData.shares_basic[annualData.shares_basic.length-1], 
+                                    annualData.shares_basic[annualData.shares_basic.length-7],
+                                    7
+                                ),
+                                calcCAGR(
+                                    annualData.shares_basic[annualData.shares_basic.length-1], 
+                                    annualData.shares_basic[annualData.shares_basic.length-5],
+                                    5
+                                ),
+                                calcCAGR(
+                                    annualData.shares_basic[annualData.shares_basic.length-1], 
+                                    annualData.shares_basic[annualData.shares_basic.length-3],
+                                    3
+                                ),
+                                calcCAGR(
+                                    annualData.shares_basic[annualData.shares_basic.length-1], 
+                                    annualData.shares_basic[annualData.shares_basic.length-2],
+                                    2
+                                ),
+                            )
+                            console.log(annualData.shares_basic)
+                            res.send(`${annualData.shares_basic}`)
+                        }
+                    }
+                }
+                makeTableData();
 
                 // res.render('title/show-stock.liquid', { thisStock : response })
             })
