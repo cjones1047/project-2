@@ -68,27 +68,76 @@ router.put('/searchedStock', (req, res) => {
                     const ratio = firstDatum/lastDatum
                     const factor = ratio**(1/years)
                     const percent = (factor*100)-100
-                    return (percent.toFixed(1))
+                    if(isNaN(percent)) return ('NA')
+                    else return (percent.toFixed(1))
                 }
 
                 // make a 'column headers' array for top row of table
-                    // First column: nothing due to being all row titles below it, next 10 column headers: just 10 most recent years, then 1 column for: TTM, and 5 columns for: 10yrCAGR, 7yrCAGR, 5yrCAGR, 3yrCAGR, Growth in TTM
+                    // First column: nothing due to being all row titles below it, next 10 column headers: just 10 most recent years, then 1 column for: TTM, and 5 columns for: 10yrCAGR, 7yrCAGR, 5yrCAGR, 3yrCAGR, Last Filed Year's Growth
                     // Total: 17 columns
                 // make a separate array for every subsequent row of the table with following format:
                     // 1 index for row title, 10 indices for 10 years of annual metrics, 1 indice for TTM metric of each column (if applicable), and 5 more columns for each CAGR of row with column titles above (have to run math formulas for last 5 columns, also only done if applicable)
                     // CAGR % formula: (((recent year/oldest year)^1/# of years)*100)-100
-                    // Row headers:
-                        // Shares, Revenue ($), Earnings ($), Equity ($), Cash Flow from Operations ($), Free Cash Flow ($), Long-Term Debt ($), Short-Term Debt ($), Return on Equity (%), Return of Invested Capital (%)
-                    const sharesHeader = ['Shares']
-                    const sharesBasicData = annualData.shares_basic.slice(-10)
-                    const sharesRow = sharesHeader.concat(sharesBasicData.flatMap(x => shortenBigNum(x)), 'NA')
+                    // 11 row headers:
+                        // Shares, Revenue ($), Earnings ($), Equity ($), Cash Flow from Operations ($), CapEx ($), Free Cash Flow ($), Long-Term Debt ($), Short-Term Debt ($), Return on Equity (%), Return of Invested Capital (%)
                 // this way ^^ you can manipulate the data for each row using array methods and math functions as well
-                
+
+                console.log(metaData.name)
+
+                function seedFCF () {
+                    const realFCF = []
+                    for(let i=0;realFCF.length < 10;i++) {
+                        const fcf = annualData.cf_cfo[annualData.cf_cfo.length-(10-i)] + annualData.cfi_ppe_purchases[annualData.cfi_ppe_purchases.length-(10-i)]
+                        realFCF.push(fcf)
+                        if(realFCF.length === 10) {
+                            annualData.fcf = realFCF
+                        }
+                    }
+                }
+                seedFCF();
+
                 const makeTableData = () => {
+
                     for (const datum in annualData) {
+                        
+                        if(datum == "fcf") {
+                            const row = ['Free Cash Flow ($)']
+                            annualData.fcf = row.concat(
+                                annualData.fcf.slice(-10).flatMap(x => shortenBigNum(x)),
+                                shortenBigNum(ttmData.cf_cfo + ttmData.cfi_ppe_purchases),
+                                calcCAGR(
+                                        annualData.fcf[annualData.fcf.length-1], 
+                                        annualData.fcf[annualData.fcf.length-10],
+                                        10
+                                    ),
+                                calcCAGR(
+                                    annualData.fcf[annualData.fcf.length-1], 
+                                    annualData.fcf[annualData.fcf.length-7],
+                                    7
+                                ),
+                                calcCAGR(
+                                    annualData.fcf[annualData.fcf.length-1], 
+                                    annualData.fcf[annualData.fcf.length-5],
+                                    5
+                                ),
+                                calcCAGR(
+                                    annualData.fcf[annualData.fcf.length-1], 
+                                    annualData.fcf[annualData.fcf.length-3],
+                                    3
+                                ),
+                                calcCAGR(
+                                    annualData.fcf[annualData.fcf.length-1], 
+                                    annualData.fcf[annualData.fcf.length-2],
+                                    2
+                                ),
+                            )
+                            console.log(annualData.fcf)
+                            // res.send(`${annualData.fcf}`)
+                        }
+
                         if(datum == "shares_basic") {
-                            const sharesRow = ['Shares']
-                            annualData.shares_basic = sharesRow.concat(
+                            const row = ['Shares']
+                            annualData.shares_basic = row.concat(
                                 annualData.shares_basic.slice(-10).flatMap(x => shortenBigNum(x)),
                                 shortenBigNum(ttmData.shares_basic),
                                 calcCAGR(
@@ -118,8 +167,278 @@ router.put('/searchedStock', (req, res) => {
                                 ),
                             )
                             console.log(annualData.shares_basic)
-                            res.send(`${annualData.shares_basic}`)
+                            // res.send(`${annualData.shares_basic}`)
                         }
+
+                        if(datum == "revenue") {
+                            const row = ['Revenue ($)']
+                            annualData.revenue = row.concat(
+                                annualData.revenue.slice(-10).flatMap(x => shortenBigNum(x)),
+                                shortenBigNum(ttmData.revenue),
+                                calcCAGR(
+                                        annualData.revenue[annualData.revenue.length-1], 
+                                        annualData.revenue[annualData.revenue.length-10],
+                                        10
+                                    ),
+                                calcCAGR(
+                                    annualData.revenue[annualData.revenue.length-1], 
+                                    annualData.revenue[annualData.revenue.length-7],
+                                    7
+                                ),
+                                calcCAGR(
+                                    annualData.revenue[annualData.revenue.length-1], 
+                                    annualData.revenue[annualData.revenue.length-5],
+                                    5
+                                ),
+                                calcCAGR(
+                                    annualData.revenue[annualData.revenue.length-1], 
+                                    annualData.revenue[annualData.revenue.length-3],
+                                    3
+                                ),
+                                calcCAGR(
+                                    annualData.revenue[annualData.revenue.length-1], 
+                                    annualData.revenue[annualData.revenue.length-2],
+                                    2
+                                ),
+                            )
+                            console.log(annualData.revenue)
+                            // res.send(`${annualData.revenue}`)
+                        }
+
+                        if(datum === "net_income") {
+                            const row = ['Earnings ($)']
+                            annualData.net_income = row.concat(
+                                annualData.net_income.slice(-10).flatMap(x => shortenBigNum(x)),
+                                shortenBigNum(ttmData.net_income),
+                                calcCAGR(
+                                        annualData.net_income[annualData.net_income.length-1], 
+                                        annualData.net_income[annualData.net_income.length-10],
+                                        10
+                                    ),
+                                calcCAGR(
+                                    annualData.net_income[annualData.net_income.length-1], 
+                                    annualData.net_income[annualData.net_income.length-7],
+                                    7
+                                ),
+                                calcCAGR(
+                                    annualData.net_income[annualData.net_income.length-1], 
+                                    annualData.net_income[annualData.net_income.length-5],
+                                    5
+                                ),
+                                calcCAGR(
+                                    annualData.net_income[annualData.net_income.length-1], 
+                                    annualData.net_income[annualData.net_income.length-3],
+                                    3
+                                ),
+                                calcCAGR(
+                                    annualData.net_income[annualData.net_income.length-1], 
+                                    annualData.net_income[annualData.net_income.length-2],
+                                    2
+                                ),
+                            )
+                            console.log(annualData.net_income)
+                            // res.send(`${annualData.net_income}`)
+                        }
+
+                        if(datum === "total_equity") {
+                            const row = ['Equity ($)']
+                            annualData.total_equity = row.concat(
+                                annualData.total_equity.slice(-10).flatMap(x => shortenBigNum(x)),
+                                shortenBigNum(ttmData.total_equity),
+                                calcCAGR(
+                                        annualData.total_equity[annualData.total_equity.length-1], 
+                                        annualData.total_equity[annualData.total_equity.length-10],
+                                        10
+                                    ),
+                                calcCAGR(
+                                    annualData.total_equity[annualData.total_equity.length-1], 
+                                    annualData.total_equity[annualData.total_equity.length-7],
+                                    7
+                                ),
+                                calcCAGR(
+                                    annualData.total_equity[annualData.total_equity.length-1], 
+                                    annualData.total_equity[annualData.total_equity.length-5],
+                                    5
+                                ),
+                                calcCAGR(
+                                    annualData.total_equity[annualData.total_equity.length-1], 
+                                    annualData.total_equity[annualData.total_equity.length-3],
+                                    3
+                                ),
+                                calcCAGR(
+                                    annualData.total_equity[annualData.total_equity.length-1], 
+                                    annualData.total_equity[annualData.total_equity.length-2],
+                                    2
+                                ),
+                            )
+                            console.log(annualData.total_equity)
+                            // res.send(`${annualData.total_equity}`)
+                        }
+
+                        if(datum === "cf_cfo") {
+                            const row = ['Cash Flow from Operations ($)']
+                            annualData.cf_cfo = row.concat(
+                                annualData.cf_cfo.slice(-10).flatMap(x => shortenBigNum(x)),
+                                shortenBigNum(ttmData.cf_cfo),
+                                calcCAGR(
+                                        annualData.cf_cfo[annualData.cf_cfo.length-1], 
+                                        annualData.cf_cfo[annualData.cf_cfo.length-10],
+                                        10
+                                    ),
+                                calcCAGR(
+                                    annualData.cf_cfo[annualData.cf_cfo.length-1], 
+                                    annualData.cf_cfo[annualData.cf_cfo.length-7],
+                                    7
+                                ),
+                                calcCAGR(
+                                    annualData.cf_cfo[annualData.cf_cfo.length-1], 
+                                    annualData.cf_cfo[annualData.cf_cfo.length-5],
+                                    5
+                                ),
+                                calcCAGR(
+                                    annualData.cf_cfo[annualData.cf_cfo.length-1], 
+                                    annualData.cf_cfo[annualData.cf_cfo.length-3],
+                                    3
+                                ),
+                                calcCAGR(
+                                    annualData.cf_cfo[annualData.cf_cfo.length-1], 
+                                    annualData.cf_cfo[annualData.cf_cfo.length-2],
+                                    2
+                                ),
+                            )
+                            console.log(annualData.cf_cfo)
+                            // res.send(`${annualData.cf_cfo}`)
+                        }
+
+                        if(datum === "cfi_ppe_purchases") {
+                            const row = ['CapEx ($)']
+                            annualData.cfi_ppe_purchases = row.concat(
+                                annualData.cfi_ppe_purchases.slice(-10).flatMap(x => shortenBigNum(x)),
+                                shortenBigNum(ttmData.cfi_ppe_purchases),
+                                calcCAGR(
+                                        annualData.cfi_ppe_purchases[annualData.cfi_ppe_purchases.length-1], 
+                                        annualData.cfi_ppe_purchases[annualData.cfi_ppe_purchases.length-10],
+                                        10
+                                    ),
+                                calcCAGR(
+                                    annualData.cfi_ppe_purchases[annualData.cfi_ppe_purchases.length-1], 
+                                    annualData.cfi_ppe_purchases[annualData.cfi_ppe_purchases.length-7],
+                                    7
+                                ),
+                                calcCAGR(
+                                    annualData.cfi_ppe_purchases[annualData.cfi_ppe_purchases.length-1], 
+                                    annualData.cfi_ppe_purchases[annualData.cfi_ppe_purchases.length-5],
+                                    5
+                                ),
+                                calcCAGR(
+                                    annualData.cfi_ppe_purchases[annualData.cfi_ppe_purchases.length-1], 
+                                    annualData.cfi_ppe_purchases[annualData.cfi_ppe_purchases.length-3],
+                                    3
+                                ),
+                                calcCAGR(
+                                    annualData.cfi_ppe_purchases[annualData.cfi_ppe_purchases.length-1], 
+                                    annualData.cfi_ppe_purchases[annualData.cfi_ppe_purchases.length-2],
+                                    2
+                                ),
+                            )
+                            console.log(annualData.cfi_ppe_purchases)
+                            // res.send(`${annualData.cfi_ppe_purchases}`)
+                        }
+
+                        if(datum === "lt_debt") {
+                            const row = ['Long-Term Debt ($)']
+                            annualData.lt_debt = row.concat(
+                                annualData.lt_debt.slice(-10).flatMap(x => shortenBigNum(x)),
+                                shortenBigNum(ttmData.lt_debt),
+                                calcCAGR(
+                                        annualData.lt_debt[annualData.lt_debt.length-1], 
+                                        annualData.lt_debt[annualData.lt_debt.length-10],
+                                        10
+                                    ),
+                                calcCAGR(
+                                    annualData.lt_debt[annualData.lt_debt.length-1], 
+                                    annualData.lt_debt[annualData.lt_debt.length-7],
+                                    7
+                                ),
+                                calcCAGR(
+                                    annualData.lt_debt[annualData.lt_debt.length-1], 
+                                    annualData.lt_debt[annualData.lt_debt.length-5],
+                                    5
+                                ),
+                                calcCAGR(
+                                    annualData.lt_debt[annualData.lt_debt.length-1], 
+                                    annualData.lt_debt[annualData.lt_debt.length-3],
+                                    3
+                                ),
+                                calcCAGR(
+                                    annualData.lt_debt[annualData.lt_debt.length-1], 
+                                    annualData.lt_debt[annualData.lt_debt.length-2],
+                                    2
+                                ),
+                            )
+                            console.log(annualData.lt_debt)
+                            // res.send(`${annualData.lt_debt}`)
+                        }
+
+                        if(datum === "st_debt") {
+                            const row = ['Short-Term Debt ($)']
+                            annualData.st_debt = row.concat(
+                                annualData.st_debt.slice(-10).flatMap(x => shortenBigNum(x)),
+                                shortenBigNum(ttmData.st_debt),
+                                calcCAGR(
+                                        annualData.st_debt[annualData.st_debt.length-1], 
+                                        annualData.st_debt[annualData.st_debt.length-10],
+                                        10
+                                    ),
+                                calcCAGR(
+                                    annualData.st_debt[annualData.st_debt.length-1], 
+                                    annualData.st_debt[annualData.st_debt.length-7],
+                                    7
+                                ),
+                                calcCAGR(
+                                    annualData.st_debt[annualData.st_debt.length-1], 
+                                    annualData.st_debt[annualData.st_debt.length-5],
+                                    5
+                                ),
+                                calcCAGR(
+                                    annualData.st_debt[annualData.st_debt.length-1], 
+                                    annualData.st_debt[annualData.st_debt.length-3],
+                                    3
+                                ),
+                                calcCAGR(
+                                    annualData.st_debt[annualData.st_debt.length-1], 
+                                    annualData.st_debt[annualData.st_debt.length-2],
+                                    2
+                                ),
+                            )
+                            console.log(annualData.st_debt)
+                            // res.send(`${annualData.st_debt}`)
+                        }
+
+                        if(datum === "roe") {
+                            const row = ['Return on Equity (%)']
+                            annualData.roe = row.concat(
+                                annualData.roe.slice(-10).flatMap(x => {
+                                    x = x*100
+                                    return x.toFixed(1)
+                                })
+                            )
+                            console.log(annualData.roe)
+                            // res.send(`${annualData.roe}`)
+                        }
+
+                        if(datum === "roic") {
+                            const row = ['Return on Invested Capital (%)']
+                            annualData.roic = row.concat(
+                                annualData.roic.slice(-10).flatMap(x => {
+                                    x = x*100
+                                    return x.toFixed(1)
+                                })
+                            )
+                            console.log(annualData.roic)
+                            // res.send(`${annualData.roic}`)
+                        }
+
                     }
                 }
                 makeTableData();
