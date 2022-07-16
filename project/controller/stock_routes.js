@@ -28,7 +28,7 @@ router.put('/searchedStock', (req, res) => {
         // const el1Text = await (await el1.getProperty('textContent')).jsonValue()
         // console.log("Obtained text is: " + el1Text)
 
-        // const sharePrice = el1Text
+        // const lastSharePrice = el1Text
 
         // // //identify element with attribute selector
         // // const el2 = await page.$("table[class='W(100%) M(0)']")
@@ -54,22 +54,24 @@ router.put('/searchedStock', (req, res) => {
                     const sign = Math.sign(Number(bigNum));
                     // Divides numbers >= 1 billion by 1 billion and appends "B"
                     return Math.abs(Number(bigNum)) >= 1.0e9
-                        ? sign * (Math.abs(Number(bigNum)) / 1.0e9) + "B"
+                        ? sign * (Math.abs(Number(bigNum)) / 1.0e9).toFixed(2) + "B"
                     : // Divides numbers >= 1 million by 1 million and appends "M"
                         Math.abs(Number(bigNum)) >= 1.0e6
-                        ? sign * (Math.abs(Number(bigNum)) / 1.0e6) + "M"
+                        ? sign * (Math.abs(Number(bigNum)) / 1.0e6).toFixed(2) + "M"
                     : // Appends "K" in place of 3-5 zeroes
                         Math.abs(Number(bigNum)) >= 1.0e3
-                        ? sign * (Math.abs(Number(bigNum)) / 1.0e3) + "K"
+                        ? sign * (Math.abs(Number(bigNum)) / 1.0e3).toFixed(2) + "K"
                         : Math.abs(Number(bigNum));
                 }
 
+                // calculate the compounded growth rate between two pieces of data
                 function calcCAGR (firstDatum, lastDatum, years) {
                     const ratio = firstDatum/lastDatum
                     const factor = ratio**(1/years)
                     const percent = (factor*100)-100
                     if(isNaN(percent)) return ('NA')
-                    else return (percent.toFixed(1))
+                    else if(percent === Infinity) return ('NA')
+                    else return (parseFloat(percent.toFixed(1)))
                 }
 
                 // make a 'column headers' array for top row of table
@@ -84,12 +86,19 @@ router.put('/searchedStock', (req, res) => {
 
                 console.log(metaData.name)
 
+                // set the "annualData.fcf" array to be filled with data from our own custom calculation for free cash flow
+
                 function seedFCF () {
                     const realFCF = []
-                    for(let i=0;realFCF.length < 10;i++) {
-                        const fcf = annualData.cf_cfo[annualData.cf_cfo.length-(10-i)] + annualData.cfi_ppe_purchases[annualData.cfi_ppe_purchases.length-(10-i)]
-                        realFCF.push(fcf)
-                        if(realFCF.length === 10) {
+                    let size = 10
+                    for(let i=0;realFCF.length < size;i++) {
+                        const fcf = annualData.cf_cfo[annualData.cf_cfo.length-(size-i)] + annualData.cfi_ppe_purchases[annualData.cfi_ppe_purchases.length-(size-i)]
+                        if(isNaN(fcf)) {
+                            size--
+                            continue
+                        }
+                        else realFCF.push(fcf)
+                        if(realFCF.length === size) {
                             annualData.fcf = realFCF
                         }
                     }
@@ -101,7 +110,7 @@ router.put('/searchedStock', (req, res) => {
                     for (const datum in annualData) {
                         
                         if(datum == "fcf") {
-                            const row = ['Free Cash Flow ($)']
+                            const row = ['FCF ($)']
                             annualData.fcf = row.concat(
                                 annualData.fcf.slice(-10).flatMap(x => shortenBigNum(x)),
                                 shortenBigNum(ttmData.cf_cfo + ttmData.cfi_ppe_purchases),
@@ -276,7 +285,7 @@ router.put('/searchedStock', (req, res) => {
                         }
 
                         if(datum === "cf_cfo") {
-                            const row = ['Cash Flow from Operations ($)']
+                            const row = ['CFO ($)']
                             annualData.cf_cfo = row.concat(
                                 annualData.cf_cfo.slice(-10).flatMap(x => shortenBigNum(x)),
                                 shortenBigNum(ttmData.cf_cfo),
@@ -313,8 +322,8 @@ router.put('/searchedStock', (req, res) => {
                         if(datum === "cfi_ppe_purchases") {
                             const row = ['CapEx ($)']
                             annualData.cfi_ppe_purchases = row.concat(
-                                annualData.cfi_ppe_purchases.slice(-10).flatMap(x => shortenBigNum(x)),
-                                shortenBigNum(ttmData.cfi_ppe_purchases),
+                                annualData.cfi_ppe_purchases.slice(-10).flatMap(x => shortenBigNum(Math.abs(x))),
+                                shortenBigNum(Math.abs(ttmData.cfi_ppe_purchases)),
                                 calcCAGR(
                                         annualData.cfi_ppe_purchases[annualData.cfi_ppe_purchases.length-1], 
                                         annualData.cfi_ppe_purchases[annualData.cfi_ppe_purchases.length-10],
@@ -346,7 +355,7 @@ router.put('/searchedStock', (req, res) => {
                         }
 
                         if(datum === "lt_debt") {
-                            const row = ['Long-Term Debt ($)']
+                            const row = ['LT Debt ($)']
                             annualData.lt_debt = row.concat(
                                 annualData.lt_debt.slice(-10).flatMap(x => shortenBigNum(x)),
                                 shortenBigNum(ttmData.lt_debt),
@@ -381,7 +390,7 @@ router.put('/searchedStock', (req, res) => {
                         }
 
                         if(datum === "st_debt") {
-                            const row = ['Short-Term Debt ($)']
+                            const row = ['ST Debt ($)']
                             annualData.st_debt = row.concat(
                                 annualData.st_debt.slice(-10).flatMap(x => shortenBigNum(x)),
                                 shortenBigNum(ttmData.st_debt),
@@ -416,7 +425,7 @@ router.put('/searchedStock', (req, res) => {
                         }
 
                         if(datum === "roe") {
-                            const row = ['Return on Equity (%)']
+                            const row = ['ROE (%)']
                             annualData.roe = row.concat(
                                 annualData.roe.slice(-10).flatMap(x => {
                                     x = x*100
@@ -428,7 +437,7 @@ router.put('/searchedStock', (req, res) => {
                         }
 
                         if(datum === "roic") {
-                            const row = ['Return on Invested Capital (%)']
+                            const row = ['ROIC (%)']
                             annualData.roic = row.concat(
                                 annualData.roic.slice(-10).flatMap(x => {
                                     x = x*100
@@ -443,16 +452,6 @@ router.put('/searchedStock', (req, res) => {
                 }
                 makeTableData();
 
-                // make a 'column headers' array for top row of table
-                    // First column: nothing due to being all row titles below it, next 10 column headers: just 10 most recent years, then 1 column for: TTM, and 5 columns for: 10yrCAGR, 7yrCAGR, 5yrCAGR, 3yrCAGR, Last Filed Year's Growth
-                    // Total: 17 columns
-                // make a separate array for every subsequent row of the table with following format:
-                    // 1 index for row title, 10 indices for 10 years of annual metrics, 1 indice for TTM metric of each column (if applicable), and 5 more columns for each CAGR of row with column titles above (have to run math formulas for last 5 columns, also only done if applicable)
-                    // CAGR % formula: (((recent year/oldest year)^1/# of years)*100)-100
-                    // 11 row headers:
-                        // Shares, Revenue ($), Earnings ($), Equity ($), Cash Flow from Operations ($), CapEx ($), Free Cash Flow ($), Long-Term Debt ($), Short-Term Debt ($), Return on Equity (%), Return of Invested Capital (%)
-                // this way ^^ you can manipulate the data for each row using array methods and math functions as well
-
                 const tableData = {
                     header: [
                         '',
@@ -462,7 +461,7 @@ router.put('/searchedStock', (req, res) => {
                         '7yrCAGR',
                         '5yrCAGR',
                         '3yrCAGR',
-                        "Last Filed Year's Growth"
+                        "1yrGR"
                     ].flatMap(x => x),
                     row1: annualData.shares_basic,
                     row2: annualData.revenue,
@@ -477,9 +476,9 @@ router.put('/searchedStock', (req, res) => {
                     row11: annualData.roic
                 }
 
-                console.log(tableData)
+                // console.log(tableData)
 
-                // res.render('title/show-stock.liquid', { thisStock : response })
+                res.render('pages/show-stock.liquid', { tableData, metaData, ttmData })
             })
             .catch(err => console.error(err));
 

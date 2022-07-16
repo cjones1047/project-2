@@ -1,8 +1,12 @@
+body {
+    background-color: whitesmoke;
+}
+
 nav {
     height: 80px;
 }
 
-.container-md {
+main {
     margin-top: 120px;
 }
 
@@ -26,4 +30,20 @@ nav {
 
 p {
     text-indent: 30px;
+}
+
+table.table {
+    text-align: center;
+    border-style: solid;
+    border-color: rgb(126, 126, 126);
+    border-width: 7px;
+}
+
+.thead-dark {
+    background-color: black;
+    color: white;
+}
+
+table tbody tr th {
+    white-space: nowrap;
 }

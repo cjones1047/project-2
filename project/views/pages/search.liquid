@@ -1,20 +1,22 @@
 {% layout 'layout.liquid' %}
 
 {% block content %}
-    <div class="row">
-    <form action="/title/stocks/searchedStock?_method=PUT" method="POST">
-        <fieldset class="row">
-            <input 
-                type="text" 
-                name="stock" 
-                placeholder="enter any stock's ticker here" 
-                class="form-control"
-                required
-            >
-        </fieldset>
-        <div class="row btn-group">
-            <input type="submit" value="GO" class="btn btn-secondary">
+    <div class="container-md">
+        <div class="row">
+        <form action="/title/stocks/searchedStock?_method=PUT" method="POST">
+            <fieldset class="row">
+                <input 
+                    type="text" 
+                    name="stock" 
+                    placeholder="enter any stock's ticker here" 
+                    class="form-control"
+                    required
+                >
+            </fieldset>
+            <div class="row btn-group">
+                <input type="submit" value="GO" class="btn btn-secondary">
+            </div>
+        </form>
         </div>
-    </form>
     </div>
 {% endblock %}

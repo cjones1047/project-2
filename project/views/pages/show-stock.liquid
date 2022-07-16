@@ -1,0 +1,36 @@
+{% layout 'layout.liquid' %}
+
+{% block content %}
+    <div class="table-responsive container-fluid">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                {% for header in tableData.header %}
+                    <th scope="col">{{header}}</th>
+                {% endfor %}
+            </thead>
+            <tbody>
+                {% for row in tableData %}
+                    {% if forloop.first %}
+                    {% else %}
+                        <tr>
+                            {% for data in row %}
+                                {% if forloop.first %}
+                                {% else %}
+                                    {% for line in data %}
+                                        {% if forloop.first %}
+                                            <th scope="row">{{line}}</th>
+                                        {% else %}
+                                            <td>
+                                                {{line}}
+                                            </td>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
