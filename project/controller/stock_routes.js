@@ -131,7 +131,7 @@ router.put('/searchedStock', (req, res) => {
                                     2
                                 ),
                             )
-                            console.log(annualData.fcf)
+                            // console.log(annualData.fcf)
                             // res.send(`${annualData.fcf}`)
                         }
 
@@ -166,7 +166,7 @@ router.put('/searchedStock', (req, res) => {
                                     2
                                 ),
                             )
-                            console.log(annualData.shares_basic)
+                            // console.log(annualData.shares_basic)
                             // res.send(`${annualData.shares_basic}`)
                         }
 
@@ -201,7 +201,7 @@ router.put('/searchedStock', (req, res) => {
                                     2
                                 ),
                             )
-                            console.log(annualData.revenue)
+                            // console.log(annualData.revenue)
                             // res.send(`${annualData.revenue}`)
                         }
 
@@ -236,7 +236,7 @@ router.put('/searchedStock', (req, res) => {
                                     2
                                 ),
                             )
-                            console.log(annualData.net_income)
+                            // console.log(annualData.net_income)
                             // res.send(`${annualData.net_income}`)
                         }
 
@@ -271,7 +271,7 @@ router.put('/searchedStock', (req, res) => {
                                     2
                                 ),
                             )
-                            console.log(annualData.total_equity)
+                            // console.log(annualData.total_equity)
                             // res.send(`${annualData.total_equity}`)
                         }
 
@@ -306,7 +306,7 @@ router.put('/searchedStock', (req, res) => {
                                     2
                                 ),
                             )
-                            console.log(annualData.cf_cfo)
+                            // console.log(annualData.cf_cfo)
                             // res.send(`${annualData.cf_cfo}`)
                         }
 
@@ -341,7 +341,7 @@ router.put('/searchedStock', (req, res) => {
                                     2
                                 ),
                             )
-                            console.log(annualData.cfi_ppe_purchases)
+                            // console.log(annualData.cfi_ppe_purchases)
                             // res.send(`${annualData.cfi_ppe_purchases}`)
                         }
 
@@ -376,7 +376,7 @@ router.put('/searchedStock', (req, res) => {
                                     2
                                 ),
                             )
-                            console.log(annualData.lt_debt)
+                            // console.log(annualData.lt_debt)
                             // res.send(`${annualData.lt_debt}`)
                         }
 
@@ -411,7 +411,7 @@ router.put('/searchedStock', (req, res) => {
                                     2
                                 ),
                             )
-                            console.log(annualData.st_debt)
+                            // console.log(annualData.st_debt)
                             // res.send(`${annualData.st_debt}`)
                         }
 
@@ -423,7 +423,7 @@ router.put('/searchedStock', (req, res) => {
                                     return x.toFixed(1)
                                 })
                             )
-                            console.log(annualData.roe)
+                            // console.log(annualData.roe)
                             // res.send(`${annualData.roe}`)
                         }
 
@@ -435,13 +435,49 @@ router.put('/searchedStock', (req, res) => {
                                     return x.toFixed(1)
                                 })
                             )
-                            console.log(annualData.roic)
+                            // console.log(annualData.roic)
                             // res.send(`${annualData.roic}`)
                         }
 
                     }
                 }
                 makeTableData();
+
+                // make a 'column headers' array for top row of table
+                    // First column: nothing due to being all row titles below it, next 10 column headers: just 10 most recent years, then 1 column for: TTM, and 5 columns for: 10yrCAGR, 7yrCAGR, 5yrCAGR, 3yrCAGR, Last Filed Year's Growth
+                    // Total: 17 columns
+                // make a separate array for every subsequent row of the table with following format:
+                    // 1 index for row title, 10 indices for 10 years of annual metrics, 1 indice for TTM metric of each column (if applicable), and 5 more columns for each CAGR of row with column titles above (have to run math formulas for last 5 columns, also only done if applicable)
+                    // CAGR % formula: (((recent year/oldest year)^1/# of years)*100)-100
+                    // 11 row headers:
+                        // Shares, Revenue ($), Earnings ($), Equity ($), Cash Flow from Operations ($), CapEx ($), Free Cash Flow ($), Long-Term Debt ($), Short-Term Debt ($), Return on Equity (%), Return of Invested Capital (%)
+                // this way ^^ you can manipulate the data for each row using array methods and math functions as well
+
+                const tableData = {
+                    header: [
+                        '',
+                        annualData.fiscal_year_number.slice(-10).map(x => x.toString()),
+                        'TTM',
+                        '10yrCAGR',
+                        '7yrCAGR',
+                        '5yrCAGR',
+                        '3yrCAGR',
+                        "Last Filed Year's Growth"
+                    ].flatMap(x => x),
+                    row1: annualData.shares_basic,
+                    row2: annualData.revenue,
+                    row3: annualData.net_income,
+                    row4: annualData.total_equity,
+                    row5: annualData.cf_cfo,
+                    row6: annualData.cfi_ppe_purchases,
+                    row7: annualData.fcf,
+                    row8: annualData.lt_debt,
+                    row9: annualData.st_debt,
+                    row10: annualData.roe,
+                    row11: annualData.roic
+                }
+
+                console.log(tableData)
 
                 // res.render('title/show-stock.liquid', { thisStock : response })
             })
