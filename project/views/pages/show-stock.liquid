@@ -1,6 +1,23 @@
 {% layout 'layout.liquid' %}
 
 {% block content %}
+    
+    <div class="container-md">
+        <div class="card justify-content-center">
+            <h5 class="card-header">
+                {{metaData.name}} <br> 
+                {{metaData.symbol}}</h5>
+            <div class="card-body">
+                <h6 class="card-title">
+                    {{lastSharePrice}}
+                </h6>
+                <h6 class="card-title">
+                    Price to Revenue: {{cardMetrics.priceToRevenue}}
+                </h6>
+            </div>
+        </div>
+    </div>
+    
     <div class="table-responsive container-fluid">
         <table class="table table-bordered table-hover">
             <thead class="thead-dark">
@@ -33,4 +50,5 @@
             </tbody>
         </table>
     </div>
+
 {% endblock %}
