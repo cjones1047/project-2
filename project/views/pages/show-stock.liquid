@@ -3,18 +3,23 @@
 {% block content %}
     
     <div class="container-md">
-        <div class="card justify-content-center">
+        <div style="text-align: center;">
+            <h1>
+                {{metaData.name}}
+            </h1>
+            <h3>
+                {{metaData.symbol}}
+            </h3>
+            <h3>
+                ${{lastSharePrice}}
+            </h3>
+        </div>
+        <div class="card" style="text-align: center; max-width: 500px; margin: 20px auto;">
             <h5 class="card-header">
-                {{metaData.name}} <br> 
-                {{metaData.symbol}}</h5>
-            <div class="card-body">
-                <h6 class="card-title">
-                    {{lastSharePrice}}
-                </h6>
-                <h6 class="card-title">
-                    Price to Revenue: {{cardMetrics.priceToRevenue}}
-                </h6>
-            </div>
+                What Price We Are Buying At
+            <h2 class="card-body">
+                ${{ourPrice}}
+            </h2>
         </div>
     </div>
     
@@ -49,6 +54,18 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <div class="container-md">
+        <div class="row">
+            <div class="card col" style="text-align: justify;">
+                <h5 class="card-header">
+                    {{metaData.subindustry}}
+                <h5 class="card-body" style="font-size: 14px;">
+                        {{metaData.description}}
+                </h5>
+            </div>
+        </div>
     </div>
 
 {% endblock %}

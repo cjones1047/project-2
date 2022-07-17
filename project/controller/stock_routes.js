@@ -478,11 +478,9 @@ router.put('/searchedStock', (req, res) => {
 
                 // console.log(tableData)
 
-                const cardMetrics = {
-                    priceToRevenue: (lastSharePrice/tableData.row2[12]).toFixed(2)
-                }
+                const ourPrice = 555
 
-                res.render('pages/show-stock.liquid', { lastSharePrice, cardMetrics, tableData, metaData, ttmData })
+                res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData })
             })
             .catch(err => console.error(err));
 

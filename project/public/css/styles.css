@@ -2,10 +2,6 @@ body {
     background-color: whitesmoke;
 }
 
-nav {
-    height: 80px;
-}
-
 main {
     margin-top: 120px;
 }
@@ -46,4 +42,8 @@ table.table {
 
 table tbody tr th {
     white-space: nowrap;
+}
+
+.card {
+    margin: 10px;
 }
