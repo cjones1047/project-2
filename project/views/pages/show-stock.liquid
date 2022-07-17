@@ -2,6 +2,17 @@
 
 {% block content %}
     
+    <form action="/title/my-stocks" method="POST" >
+        <fieldset class="hidden">
+            <input type="text" class="form-control" name="name" value="{{metaData.name}}">
+            <input type="text" class="form-control" name="symbol" value="{{metaData.symbol}}">
+            <input type="number" class="form-control" name="lastPriceViewed" value="{{lastSharePrice}}">
+            <input type="number" class="form-control" name="ourBuyPrice" value="{{ourPrice}}">
+            <input type="text" class="form-control" name="subindustry" value="{{metaData.subindustry}}">
+        </fieldset>
+        <input type="submit" class="btn btn-dark" value="Add stock to My Stocks">
+    </form>
+
     <div class="container-md">
         <div style="text-align: center;">
             <h1>
@@ -11,11 +22,11 @@
                 {{metaData.symbol}}
             </h3>
             <h3>
-                ${{lastSharePrice}}
+                Current Price: {{lastSharePrice}}
             </h3>
         </div>
         <div class="card" style="text-align: center; max-width: 500px; margin: 20px auto;">
-            <h5 class="card-header">
+            <h5 class="card-header" style="white-space: nowrap;">
                 What Price We Are Buying At
             <h2 class="card-body">
                 ${{ourPrice}}
@@ -62,7 +73,7 @@
                 <h5 class="card-header">
                     {{metaData.subindustry}}
                 <h5 class="card-body" style="font-size: 14px;">
-                        {{metaData.description}}
+                    {{metaData.description}}
                 </h5>
             </div>
         </div>

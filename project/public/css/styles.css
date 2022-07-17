@@ -46,4 +46,14 @@ table tbody tr th {
 
 .card {
     margin: 10px;
+    width: 18rem;
+    text-align: center;
+}
+
+fieldset.hidden {
+    display: none;
+}
+
+form input[type=submit] {
+    margin-bottom: 30px;
 }

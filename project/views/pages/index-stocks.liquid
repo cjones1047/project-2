@@ -1,0 +1,61 @@
+{% layout 'layout.liquid' %}
+
+{% block content %}
+    <div>
+        <h2 class="display-6">
+            My Stocks &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/title/search-stock" class="btn btn-info">Add Stocks</a>
+        </h2>
+        <div class="row justify-content-center">
+            {% for stock in stocks %}
+                <div class="card">
+                    <h3 class="card-header" style="padding-bottom: 0;">
+                        <div style="margin-bottom: 10px;">
+                            {{stock.symbol}}
+                        </div>
+                        <div class="row justify-content-center" style="padding-bottom: 0;">
+                            <form action="/title/stocks/searchedStock?_method=PUT" method="POST" style="width: fit-content; margin: 0 5px;">
+                                <fieldset class="hidden">
+                                    <input 
+                                        type="text" 
+                                        name="stock"
+                                        class="form-control"
+                                        value="{{stock.symbol}}"
+                                    >
+                                </fieldset>
+                                <div class="row btn-group" style="width: 100px;">
+                                    <input type="submit" value="View" class="btn btn-secondary">
+                                </div>
+                            </form>
+                            <form action="/title/my-stocks/{{stock._id}}?_method=DELETE" method="POST" style="width: fit-content; margin: 0 5px;">
+                                <div class="row btn-group" style="width: 100px;">
+                                    <input type="submit" value="Delete" class="btn btn-secondary">
+                                </div>
+                            </form>
+                        </div>
+                    </h5>
+                    
+                    <div class="card-body" style="padding: 10px;">
+                        <h6 class="card-title">
+                            {{stock.name}}
+                        </h6>
+                        <p class="card-text">
+                            <br>
+                            <b>Industry:</b> {{stock.subindustry}}
+                        </p>
+                        <p class="card-text">
+                            <br>
+                            <b>Last Price Viewed:</b> {{stock.lastPriceViewed}}
+                        </p>
+                        <p class="card-text">
+                            <br>
+                            <b>Our Buy Price:</b> {{stock.ourBuyPrice}}
+                        </p>
+
+                        <!-- <a href="/fruits/{{fruit._id}}" class="btn btn-info">View</a> -->
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
