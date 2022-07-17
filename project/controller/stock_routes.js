@@ -1,5 +1,7 @@
 const express = require('express')
 const puppeteer = require('puppeteer-extra');
+// importing Stock model to access database
+const Stock = require('../models/stock.js')
 // making a router
 const router = express.Router()
 // this allows us to load our env variables
@@ -84,7 +86,7 @@ router.put('/searchedStock', (req, res) => {
                         // Shares, Revenue ($), Earnings ($), Equity ($), Cash Flow from Operations ($), CapEx ($), Free Cash Flow ($), Long-Term Debt ($), Short-Term Debt ($), Return on Equity (%), Return of Invested Capital (%)
                 // this way ^^ you can manipulate the data for each row using array methods and math functions as well
 
-                console.log(metaData.name)
+                // console.log(metaData.name)
 
                 // set the "annualData.fcf" array to be filled with data from our own custom calculation for free cash flow
 
@@ -480,7 +482,32 @@ router.put('/searchedStock', (req, res) => {
 
                 const ourPrice = 555
 
-                res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData })
+                Stock.exists({symbol:`${metaData.symbol}`}, function (err, doc) {
+                    if (err){
+                        console.error(err)
+                    } else if (doc) {
+                        console.log("Found it")
+
+                        // so that the lastPriceViewed in the schema of the already added stock has an updated price
+                        Stock.findOneAndUpdate({symbol: `${metaData.symbol}`}, 
+                            {lastPriceViewed: lastSharePrice}, function (err, doc) {
+                            if (err){
+                                console.error(err)
+                            }
+                            else {
+                                console.log("Original Doc : ",doc)
+                                const showAdd = false
+                                res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd })
+                            }
+                        });
+                        
+                    } else {
+                        console.log("No schema exists")
+                        const showAdd = true
+                        res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd })
+                    }
+                });
+
             })
             .catch(err => console.error(err));
 

@@ -1,17 +1,24 @@
 {% layout 'layout.liquid' %}
 
 {% block content %}
-    
-    <form action="/title/my-stocks" method="POST" >
-        <fieldset class="hidden">
-            <input type="text" class="form-control" name="name" value="{{metaData.name}}">
-            <input type="text" class="form-control" name="symbol" value="{{metaData.symbol}}">
-            <input type="number" class="form-control" name="lastPriceViewed" value="{{lastSharePrice}}">
-            <input type="number" class="form-control" name="ourBuyPrice" value="{{ourPrice}}">
-            <input type="text" class="form-control" name="subindustry" value="{{metaData.subindustry}}">
-        </fieldset>
-        <input type="submit" class="btn btn-dark" value="Add stock to My Stocks">
-    </form>
+
+    <div class="row">
+        {% if showAdd == true %}
+            <form action="/title/my-stocks" method="POST" style="width: fit-content;" >
+                <fieldset class="hidden">
+                    <input type="text" class="form-control" name="name" value="{{metaData.name}}">
+                    <input type="text" class="form-control" name="symbol" value="{{metaData.symbol}}">
+                    <input type="number" class="form-control" name="lastPriceViewed" value="{{lastSharePrice}}">
+                    <input type="number" class="form-control" name="ourBuyPrice" value="{{ourPrice}}">
+                    <input type="text" class="form-control" name="subindustry" value="{{metaData.subindustry}}">
+                </fieldset>
+                <input type="submit" class="btn btn-dark" value="Add stock to My Stocks">
+            </form>
+        {% else %}
+            <a href="/title/my-stocks" class="btn btn-info" style="width: 200px; margin: 0 10px; margin-bottom: 30px;">Back to My Stocks</a>
+        {% endif %}
+        
+    </div>
 
     <div class="container-md">
         <div style="text-align: center;">
