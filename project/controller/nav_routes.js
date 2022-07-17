@@ -3,6 +3,8 @@ const express = require('express')
 const router = express.Router()
 // importing Stock model to access database
 const Stock = require('../models/stock.js')
+// importing Portfolio model to access database
+const Portfolio = require('../models/portfolio.js')
 // this allows us to load our env variables
 require('dotenv').config()
 
@@ -43,6 +45,20 @@ router.get('/my-stocks', (req, res) => {
         .then(stocks => {
             // res.json(stocks) - return stocks as json
             res.render('pages/index-stocks.liquid', { stocks })
+        })
+        .catch(err => {
+            res.json(err)
+        })
+})
+
+// GET - Index/My Portfolios Page
+// localhost:3000/title/my-portfolios
+router.get('/my-portfolios', (req, res) => {
+    // mongoose to find all portfolios
+    Portfolio.find({})
+        .then(portfolios => {
+            // res.json(portfolios) - return portfolios as json
+            res.render('pages/index-portfolios.liquid', { portfolios })
         })
         .catch(err => {
             res.json(err)

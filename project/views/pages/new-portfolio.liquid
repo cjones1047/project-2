@@ -1,0 +1,26 @@
+{% layout 'layout.liquid' %}
+
+{% block content %}
+    
+    <a href="/title/my-portfolios" class="btn btn-info" style="width: 200px; margin: 0 10px; margin-bottom: 30px;">Back to My Portfolios</a>
+
+    <div class="container-md">
+        <div class="row">
+        <form action="/title/new-portfolio" method="POST">
+            <fieldset class="row">
+                <input 
+                    type="text" 
+                    name="stock" 
+                    placeholder="enter any stock's ticker here" 
+                    class="form-control"
+                    required
+                >
+            </fieldset>
+            <div class="row btn-group">
+                <input type="submit" value="GO" class="btn btn-secondary">
+            </div>
+        </form>
+        </div>
+    </div>
+
+{% endblock %}

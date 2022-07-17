@@ -15,7 +15,7 @@ const stockSchema = new Schema({
 })
 
 // need to make a model
-// this COLLECTION will be called 'stocks' (lowercase, plural of 'Fruit')
+// this COLLECTION will be called 'stocks' (lowercase, plural of 'Stock')
 const Stock = model('Stock', stockSchema)
 
 module.exports = Stock
