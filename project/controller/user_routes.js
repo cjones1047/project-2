@@ -65,7 +65,7 @@ router.post('/login', async (req, res) => {
                     req.session.loggedIn = true
                     req.session.userId = user._id
                     console.log('this is the session after login', req.session)
-                    res.redirect('/fruits')
+                    res.redirect('/title/my-stocks')
                 } else {
                     res.json({error: 'username or password is incorrect'})
                 }
@@ -87,7 +87,7 @@ router.get('/logout', (req, res) => {
         console.log('this is the error in logout', ret)
         console.log('session has been destroyed')
         console.log(req.session)
-        res.redirect('/fruits')
+        res.redirect('/users/login')
     })
 })
 

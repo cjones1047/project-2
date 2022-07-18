@@ -32,6 +32,8 @@ router.post('/:portfolioId', (req, res) => {
     const portfolioId = req.params.portfolioId
     console.log(req.body)
 
+    req.body.owner = req.session.userId
+
     Portfolio.findById(portfolioId)
         // after we found a portfolio
         // take that portfolio and add the comment
@@ -59,29 +61,6 @@ router.get('/:id', (req, res) => {
             // res.json(stocks) - return stocks as json
             // console.log(portfolioId)
             res.render('pages/edit-portfolio.liquid', { portfolio })
-        })
-        .catch(err => {
-            res.json(err)
-        })
-})
-
-// localhost:3000/title/portfolios/:portfolioId <- A single Portfolio can have many allocations
-router.post('/:portfolioId', (req, res) => {
-    const portfolioId = req.params.portfolioId
-    console.log(req.body)
-
-    Portfolio.findById(portfolioId)
-        // after we found a portfolio
-        // take that portfolio and add the comment
-        .then(portfolio => {
-            // single portfolio doc there is a field called allocations
-            portfolio.allocations.push(req.body)
-
-            // if we change a doc, we have to return and call .save() on the doc
-            return portfolio.save()
-        })
-        .then(portfolio => {
-            res.redirect(`/title/portfolios/${portfolio._id}`)
         })
         .catch(err => {
             res.json(err)

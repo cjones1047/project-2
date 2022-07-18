@@ -11,7 +11,7 @@ require('dotenv').config()
 // Routes
 ///////////////////////////////////////////////////
 
-// PUT - Renders pages/show-stock.liquid using user-entered ticker
+// UPDATE - Renders pages/show-stock.liquid using user-entered ticker
 router.put('/searchedStock', (req, res) => {
     const searchedStock = req.body.stock
 
@@ -481,6 +481,32 @@ router.put('/searchedStock', (req, res) => {
                 // console.log(tableData)
 
                 const ourPrice = 555
+
+                // Stock.exists({symbol:`${metaData.symbol}`, owner: `${req.session.userId}`}, function (err, doc) {
+                //     if (err){
+                //         console.error(err)
+                //     } else if (doc) {
+                //         console.log("Found it")
+
+                //         // so that the lastPriceViewed in the schema of the already added stock has an updated price
+                //         Stock.findOneAndUpdate({symbol: `${metaData.symbol}`}, 
+                //             {lastPriceViewed: lastSharePrice}, function (err, doc) {
+                //             if (err){
+                //                 console.error(err)
+                //             }
+                //             else {
+                //                 console.log("Original Doc : ",doc)
+                //                 const showAdd = false
+                //                 res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd })
+                //             }
+                //         });
+                        
+                //     } else {
+                //         console.log("No schema exists")
+                //         const showAdd = true
+                //         res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd })
+                //     }
+                // });
 
                 Stock.exists({symbol:`${metaData.symbol}`}, function (err, doc) {
                     if (err){

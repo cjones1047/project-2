@@ -20,7 +20,6 @@ const userSchema = new Schema({
         type: String,
         required: true
     }
-
 })
 
 // make a user model with the user schema

@@ -54,7 +54,7 @@ router.get('/search-stock', (req, res) => {
 // localhost:3000/title/my-stocks
 router.get('/my-stocks', (req, res) => {
     // mongoose to find all stocks
-    Stock.find({})
+    Stock.find({ owner: req.session.userId })
         .then(stocks => {
             // res.json(stocks) - return stocks as json
             res.render('pages/index-stocks.liquid', { stocks })
@@ -68,7 +68,7 @@ router.get('/my-stocks', (req, res) => {
 // localhost:3000/title/my-portfolios
 router.get('/my-portfolios', (req, res) => {
     // mongoose to find all portfolios
-    Portfolio.find({})
+    Portfolio.find({ owner: req.session.userId })
         .then(portfolios => {
             // res.json(portfolios) - return portfolios as json
             res.render('pages/index-portfolios.liquid', { portfolios })
@@ -84,7 +84,7 @@ router.post('/my-stocks', (req, res) => {
     // when we have user-specific stocks, we'll add a username upon creation
     // remember, when we logged in, we saved the username to the session object
     // TODO: need to get a users ._id somehow and change this line
-    // req.body.owner = req.session.userId
+    req.body.owner = req.session.userId
 
     Stock.create(req.body)
         .then(stock => {
@@ -103,7 +103,7 @@ router.post('/my-portfolios', (req, res) => {
     // when we have user-specific stocks, we'll add a username upon creation
     // remember, when we logged in, we saved the username to the session object
     // TODO: need to get a users ._id somehow and change this line
-    // req.body.owner = req.session.userId
+    req.body.owner = req.session.userId
 
     Portfolio.create(req.body)
         .then(portfolio => {
