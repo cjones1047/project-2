@@ -1,0 +1,62 @@
+{% layout 'layout.liquid' %}
+
+{% block content %}
+    
+    <a href="/title/my-portfolios" class="btn btn-info" style="width: 200px; margin: 0 10px; margin-bottom: 30px;">Back to My Portfolios</a>
+    
+    <!-- <form action="/title/my-portfolios" method="POST" class="row justify-content-center">
+        <fieldset style="width: fit-content; margin: 10px 5px;">
+            <input 
+                type="text" 
+                name="name" 
+                placeholder="name of new portfolio..." 
+                class="form-control"
+                style="width: 350px; height: 50px; font-size: 20px;"
+                autocomplete="off"
+                value="{{portfolio.name}}">
+        </fieldset>
+        <div class="btn-group" style="width: fit-content; margin: 10px 5px;">
+            <input type="submit" value="Create Portfolio" class="btn btn-secondary" style="height: 50px;">
+        </div>
+    </form> -->
+
+    <form action="/title/portfolios/{{portfolio._id}}" method="POST" class="row justify-content-center">
+        <!-- <fieldset style="width: fit-content;">
+            <select class="custom-select form-control" required>
+                <option selected>Pick from My Stocks...</option>
+                {% for stock in stocks %}
+                    <option type="text" name="stockSymbol">{{stock.symbol}}</option>
+                {% endfor %}
+            </select>
+        </fieldset> -->
+        <input 
+            type="text" 
+            name="stockSymbol" 
+            placeholder="Ticker of stock to add..." 
+            class="form-control"
+            style="width: fit-content; height: 38px; margin: 10px;"
+            required>
+        <input 
+            type="number" 
+            name="numberOfShares" 
+            placeholder="# of Shares to Add" 
+            class="form-control"
+            min="1"
+            style="width: fit-content; height: 38px; margin: 10px;"
+            required>
+        <div class="btn-group" style="width: fit-content; margin: 10px;">
+            <input type="submit" value="Add To Portfolio" class="btn btn-secondary">
+        </div>
+    </form>
+
+    {% if portfolio.allocations.length > 0 %}
+        <div class="col justify-content-center">
+            <div class="list-group row" style="max-width: 500px;">
+                {% for allocation in portfolio.allocations %}
+                    <button type="button" class="list-group-item list-group-item-action">{{allocation.numberOfShares}} shares of {{allocation.stockSymbol}}</button>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

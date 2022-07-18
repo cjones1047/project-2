@@ -1,5 +1,6 @@
 // using an already connected mongoose NOT a fresh one from node_modules
 const mongoose = require('./connection.js')
+const allocationSchema = require('./allocation.js')
 
 // inside of mongoose, I want the keys named 'Schema' and 'model' to be used without specifying 'mongoose', so I'm using this destructuring syntax
 const { Schema, model } = mongoose
@@ -9,7 +10,7 @@ const portfolioSchema = new Schema({
         type: String,
         required: true
     },
-    allocations: []
+    allocations: [allocationSchema]
 }, {
     timestamp: true
 })
