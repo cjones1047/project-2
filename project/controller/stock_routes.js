@@ -482,7 +482,30 @@ router.put('/searchedStock', (req, res) => {
 
                 const ourPrice = 555
 
-                // Stock.exists({symbol:`${metaData.symbol}`, owner: `${req.session.userId}`}, function (err, doc) {
+                // User.findById({userId: `${req.session.userId}`}) 
+                //     .populate()
+
+                Stock.exists({symbol:`${metaData.symbol}`, owner: `${req.session.userId}`}, function (err, doc) {
+                    if (err){
+                        console.error(err)
+                    } else if (doc) {
+                        console.log("Found it")
+                        console.log(doc)
+                        console.log("Original Doc : ",doc)
+                        const showAdd = false
+                        res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd 
+                        })
+
+                        // so that the lastPriceViewed in the schema of the already added stock has an updated price
+                        
+                    } else {
+                        console.log("No schema exists")
+                        const showAdd = true
+                        res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd })
+                    }
+                });
+
+                // Stock.exists({symbol:`${metaData.symbol}`}, function (err, doc) {
                 //     if (err){
                 //         console.error(err)
                 //     } else if (doc) {
@@ -507,32 +530,6 @@ router.put('/searchedStock', (req, res) => {
                 //         res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd })
                 //     }
                 // });
-
-                Stock.exists({symbol:`${metaData.symbol}`}, function (err, doc) {
-                    if (err){
-                        console.error(err)
-                    } else if (doc) {
-                        console.log("Found it")
-
-                        // so that the lastPriceViewed in the schema of the already added stock has an updated price
-                        Stock.findOneAndUpdate({symbol: `${metaData.symbol}`}, 
-                            {lastPriceViewed: lastSharePrice}, function (err, doc) {
-                            if (err){
-                                console.error(err)
-                            }
-                            else {
-                                console.log("Original Doc : ",doc)
-                                const showAdd = false
-                                res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd })
-                            }
-                        });
-                        
-                    } else {
-                        console.log("No schema exists")
-                        const showAdd = true
-                        res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd })
-                    }
-                });
 
             })
             .catch(err => console.error(err));
