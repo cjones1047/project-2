@@ -116,18 +116,4 @@ router.delete('/:portfolioId/:allocationId', (req, res) => {
 
 ///////////////////////////////////////////////////
 
-// const query1 = await Stock.find({})
-// const query2 = await Portfolio.find({})
-// Promise.all([query1, query2])
-//     .then(result => {
-//         const stocks = result.stocks
-//         const portolios = result.portolios
-//         console.log(stocks, portfolios)
-
-//         res.render('pages/edit-portfolio.liquid', { stocks, portfolios })
-//     })
-//     .catch(err => {
-//         res.json(err)
-//     })
-
 module.exports = router

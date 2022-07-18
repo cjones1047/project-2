@@ -45,18 +45,39 @@
             style="width: fit-content; height: 38px; margin: 10px;"
             required>
         <div class="btn-group" style="width: fit-content; margin: 10px;">
-            <input type="submit" value="Add To Portfolio" class="btn btn-secondary">
+            <input type="submit" value="Add To {{portfolio.name}}" class="btn btn-secondary">
         </div>
     </form>
-
+    
     {% if portfolio.allocations.length > 0 %}
-        <div class="col justify-content-center">
-            <div class="list-group row" style="max-width: 500px;">
-                {% for allocation in portfolio.allocations %}
-                    <button type="button" class="list-group-item list-group-item-action">{{allocation.numberOfShares}} shares of {{allocation.stockSymbol}}</button>
-                {% endfor %}
-            </div>
+        <div class="list-group" style="max-width: 500px; margin: 0 auto;">
+            {% for allocation in portfolio.allocations %}
+                {% if allocation.numberOfShares > 1 %}
+                    <button type="button" class="list-group-item list-group-item-action">
+                        <div class="row">
+                            <div style="width: fit-content; margin: 0;">
+                                {{allocation.numberOfShares}} shares of {{allocation.stockSymbol}}
+                            </div>
+                            <form class="click-shadow" action="/title/portfolios/{{portfolio._id}}/{{allocation._id}}?_method=DELETE" method="POST" style="width: fit-content; padding: 0; position: absolute; right: 10px;">
+                                <input type="submit" style="margin: 0; border: 0; border-radius: 5px; color: rgb(45, 179, 220);" onclick="style.backgroundColor = 'rgb(101, 101, 101)'; " value="X">
+                            </form>
+                        </div>
+                    </button>
+                {% else %}
+                    <button type="button" class="list-group-item list-group-item-action">
+                        <div class="row">
+                            <div style="width: fit-content; margin: 0;">
+                                {{allocation.numberOfShares}} share of {{allocation.stockSymbol}}
+                            </div>
+                            <form class="click-shadow" action="/title/portfolios/{{portfolio._id}}/{{allocation._id}}?_method=DELETE" method="POST" style="width: fit-content; padding: 0; position: absolute; right: 10px;">
+                                <input type="submit" style="margin: 0; border: 0; border-radius: 5px; color: rgb(45, 179, 220);" onclick="style.backgroundColor = 'rgb(101, 101, 101)'; " value="X">
+                            </form>
+                        </div>
+                    </button>
+                {% endif %}
+            {% endfor %}
         </div>
     {% endif %}
+   
 
 {% endblock %}

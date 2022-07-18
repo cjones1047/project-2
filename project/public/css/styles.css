@@ -57,3 +57,7 @@ fieldset.hidden {
 form input[type=submit] {
     margin-bottom: 30px;
 }
+
+.list-group-item:hover {
+    cursor: default;
+}
