@@ -24,9 +24,17 @@
                 <a class="nav-item nav-link" href="/title/my-stocks">My Stocks</a>
                 <a class="nav-item nav-link" href="/title/my-portfolios">My Portfolios</a>
                 <a class="nav-item nav-link" href="#">Backtesting</a>
-                <a class="nav-item nav-link" href="#">Log In</a>
-                <a class="nav-item nav-link" href="#">Sign Up</a>
-                <a class="nav-item nav-link" href="#">Log Out</a>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        My Profile
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <a href="/user/log-in" class="dropdown-item btn btn-secondary">Log In</a>
+                        <a href="/user/sign-up" class="dropdown-item btn btn-secondary">Sign Up</a>
+                        <a href="/user/log-out" class="dropdown-item btn btn-secondary">Log Out</a>
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </nav>

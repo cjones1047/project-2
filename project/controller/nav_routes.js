@@ -25,6 +25,19 @@ router.delete('/my-stocks/:id', (req, res) => {
         })
 })
 
+// DELETE
+router.delete('/my-portfolios/:id', (req, res) => {
+    const portfolioId = req.params.id
+
+    Portfolio.findByIdAndRemove(portfolioId)
+        .then(portfolio => {
+            res.redirect('/title/my-portfolios')
+        })
+        .catch(err => {
+            res.json(err)
+        })
+})
+
 // GET - Home Page
 // localhost:3000/title
 router.get('/', (req, res) => {
@@ -84,19 +97,19 @@ router.post('/my-stocks', (req, res) => {
         })
 })
 
-// POST - create a Stock recently added
-router.delete('/my-stocks', (req, res) => {
+// POST - create a Portfolio recently added
+router.post('/my-portfolios', (req, res) => {
     
     // when we have user-specific stocks, we'll add a username upon creation
     // remember, when we logged in, we saved the username to the session object
     // TODO: need to get a users ._id somehow and change this line
     // req.body.owner = req.session.userId
 
-    Stock.create(req.body)
-        .then(stock => {
-            console.log(stock)
-            res.redirect('/title/my-stocks')
-            // res.json(stock)
+    Portfolio.create(req.body)
+        .then(portfolio => {
+            console.log(portfolio)
+            res.redirect('/title/my-portfolios')
+            // res.json(portfolio)
         })
         .catch(err => {
             res.json(err)

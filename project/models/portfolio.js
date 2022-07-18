@@ -5,11 +5,11 @@ const mongoose = require('./connection.js')
 const { Schema, model } = mongoose
 
 const portfolioSchema = new Schema({
-    name: String,
-    symbol: String,
-    lastPriceViewed: Number,
-    ourBuyPrice: Number,
-    subindustry: String
+    name: {
+        type: String,
+        required: true
+    },
+    allocations: []
 }, {
     timestamp: true
 })

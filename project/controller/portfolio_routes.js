@@ -16,7 +16,15 @@ require('dotenv').config()
 // GET - New Portfolio Page
 // localhost:3000/title/portfolios/new
 router.get('/new', (req, res) => {
-    res.render('pages/new-portfolio.liquid')
+    // mongoose to find all stocks
+    Stock.find({})
+        .then(stocks => {
+            // res.json(stocks) - return stocks as json
+            res.render('pages/new-portfolio.liquid', { stocks })
+        })
+        .catch(err => {
+            res.json(err)
+        })
 })
 
 ///////////////////////////////////////////////////

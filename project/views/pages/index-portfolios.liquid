@@ -6,5 +6,37 @@
             My Portfolios &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="/title/portfolios/new" class="btn btn-info">Add A Portfolio</a>
         </h2>
+        <div class="row justify-content-center">
+            {% for portfolio in portfolios %}
+                <div class="card">
+
+                    <h3 class="card-header" style="padding-bottom: 0;">
+                        <div style="margin-bottom: 10px;">
+                            {{portfolio.name}}
+                        </div>
+                        <div class="row justify-content-center" style="padding-bottom: 0;">
+                            <!-- <div class="row btn-group" style="width: 100px;">
+                                <input type="submit" value="Edit" class="btn btn-secondary">
+                            </div> -->
+                            <a href="/title/portfolios/{{portfolio._id}}" class="btn btn-secondary" style="width: 100px; height: fit-content;">Edit</a>
+                            <form action="/title/my-portfolios/{{portfolio._id}}?_method=DELETE" method="POST" style="width: fit-content; margin: 0 5px;">
+                                <div class="row btn-group" style="width: 100px;">
+                                    <input type="submit" value="Delete" class="btn btn-secondary">
+                                </div>
+                            </form>
+                        </div>
+                    </h3>
+                    
+                    <!-- <div class="card-body" style="padding: 10px;">
+                        {% for allocation in portfolio.allocation %}
+                            <p class="card-text">
+                                <b>Industry:</b> {{stock.subindustry}}
+                            </p>
+                        {% endfor %}
+                    </div> -->
+
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

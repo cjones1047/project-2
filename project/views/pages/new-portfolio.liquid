@@ -3,24 +3,45 @@
 {% block content %}
     
     <a href="/title/my-portfolios" class="btn btn-info" style="width: 200px; margin: 0 10px; margin-bottom: 30px;">Back to My Portfolios</a>
-
-    <div class="container-md">
-        <div class="row">
-        <form action="/title/new-portfolio" method="POST">
-            <fieldset class="row">
-                <input 
-                    type="text" 
-                    name="stock" 
-                    placeholder="enter any stock's ticker here" 
-                    class="form-control"
-                    required
-                >
-            </fieldset>
-            <div class="row btn-group">
-                <input type="submit" value="GO" class="btn btn-secondary">
-            </div>
-        </form>
+    
+    <form action="/title/my-portfolios" method="POST" class="row justify-content-center">
+        <fieldset style="width: fit-content; margin: 10px 5px;">
+            <input 
+                type="text" 
+                name="name" 
+                placeholder="name of new portfolio..." 
+                class="form-control"
+                style="width: 350px; height: 50px; font-size: 20px;"
+                autocomplete="off"
+                required>
+        </fieldset>
+        <div class="btn-group" style="width: fit-content; margin: 10px 5px;">
+            <input type="submit" value="Create Portfolio" class="btn btn-secondary" style="height: 50px;">
         </div>
-    </div>
+    </form>
+
+    <!-- <form action="/title/portfolios/new" method="POST" class="row justify-content-center">
+        <fieldset style="width: fit-content;">
+            <select class="custom-select form-control" required>
+                <option selected>Pick from My Stocks...</option>
+                {% for stock in stocks %}
+                    <option name="symbol">{{stock.symbol}}</option>
+                {% endfor %}
+            </select>
+        </fieldset>
+        <input 
+            type="number" 
+            name="numberOfShares" 
+            placeholder="# of Shares to Add" 
+            class="form-control"
+            min="1"
+            style="width: fit-content; height: 38px;"
+            required>
+        <div class="btn-group" style="width: fit-content;">
+            <input type="submit" value="Add To Portfolio" class="btn btn-secondary">
+        </div>
+    </form> -->
+
+
 
 {% endblock %}
