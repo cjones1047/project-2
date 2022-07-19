@@ -28,7 +28,7 @@ router.put('/searchedStock', (req, res) => {
         const el1 = await page.$("fin-streamer[class='Fw(b) Fz(36px) Mb(-4px) D(ib)']")
         //obtain text
         const el1Text = await (await el1.getProperty('textContent')).jsonValue()
-        console.log("Obtained text is: " + el1Text)
+        console.log("Obtained price is: " + el1Text)
 
         const lastSharePrice = el1Text
 
@@ -485,6 +485,29 @@ router.put('/searchedStock', (req, res) => {
                 // User.findById({userId: `${req.session.userId}`}) 
                 //     .populate()
 
+                if(req.session.username === undefined) {
+                    console.log('no user logged in')
+                    Stock.exists({symbol:`${metaData.symbol}`, owner: undefined}, function (err, doc) {
+                        if (err){
+                            console.error(err)
+                        } else if (doc) {
+                            console.log("Found it")
+                            console.log(doc)
+                            console.log("Original Doc : ",doc)
+                            const showAdd = false
+                            res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd 
+                            })
+    
+                            // so that the lastPriceViewed in the already added stock has an updated price
+                            
+                        } else {
+                            console.log("No schema exists")
+                            const showAdd = true
+                            res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd })
+                        }
+                    });
+                }
+
                 Stock.exists({symbol:`${metaData.symbol}`, owner: `${req.session.userId}`}, function (err, doc) {
                     if (err){
                         console.error(err)
@@ -496,7 +519,7 @@ router.put('/searchedStock', (req, res) => {
                         res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd 
                         })
 
-                        // so that the lastPriceViewed in the schema of the already added stock has an updated price
+                        // so that the lastPriceViewed in the already added stock has an updated price
                         
                     } else {
                         console.log("No schema exists")
