@@ -47,10 +47,9 @@
                             <br>
                             <b>Last Price Viewed:</b> {{stock.lastPriceViewed}}
                         </p>
-                        <p class="card-text">
-                            <br>
-                            <b>Our Buy Price:</b> {{stock.ourBuyPrice}}
-                        </p>
+                        <div class="card-text" style="border: solid 2px rgb(100, 100, 100); border-radius: 15px; padding: 5px; height: fit-content; margin: 0 auto;">
+                            <b>Our Buy Price: {{stock.ourBuyPrice}} </b>
+                        </div>
                     </div>
                 </div>
             {% endfor %}

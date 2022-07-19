@@ -71,8 +71,8 @@ router.put('/searchedStock', (req, res) => {
                     const ratio = firstDatum/lastDatum
                     const factor = ratio**(1/years)
                     const percent = (factor*100)-100
-                    if(isNaN(percent)) return ('NA')
-                    else if(percent === Infinity) return ('NA')
+                    if(isNaN(percent)) return ('0')
+                    else if(percent === Infinity) return ('0')
                     else return (parseFloat(percent.toFixed(1)))
                 }
 
@@ -480,7 +480,68 @@ router.put('/searchedStock', (req, res) => {
 
                 // console.log(tableData)
 
-                const ourPrice = 555
+                // const ourPrice = 555
+
+                const findOurPrice = () => {
+                    const allGrowthRates = 
+                        [
+                            tableData.row2.slice(-5).map(x => parseFloat(x)),
+                            tableData.row3.slice(-5).map(x => parseFloat(x)),
+                            tableData.row4.slice(-5).map(x => parseFloat(x)),
+                            tableData.row7.slice(-5).map(x => parseFloat(x))
+                        ].flatMap(x=>x)
+
+                    const trueGrowthRate = Math.floor(allGrowthRates.reduce((a, b) => a + b, 0)/allGrowthRates.length)
+                    
+                    const multiple = trueGrowthRate*2
+
+                    let ourGrowthRate = trueGrowthRate
+
+                    if(trueGrowthRate > 10) ourGrowthRate = 10
+                    // console.log(allGrowthRates)
+
+                    const recentFCFPS = (
+                        (
+                        (
+                            tableData.row7.slice(-9,-6)
+                            .map(x => {
+                                const characters = x.split('')
+                                if(characters[characters.length-1] === "B") return parseFloat(x)*1000000000
+                                else if(characters[characters.length-1] === "M") return parseFloat(x)*1000000
+                                else if(characters[characters.length-1] === "K") return parseFloat(x)*1000
+                                else return parseFloat(x)
+                            })
+                            .reduce((a,b) => a+b, 0)/3
+                        )/ttmData.shares_basic
+                        )*((trueGrowthRate/100)+1)
+                        ).toFixed(2)
+
+                    const recentEPS = (
+                        (
+                        (
+                            tableData.row3.slice(-9,-6)
+                            .map(x => {
+                                const characters = x.split('')
+                                if(characters[characters.length-1] === "B") return parseFloat(x)*1000000000
+                                else if(characters[characters.length-1] === "M") return parseFloat(x)*1000000
+                                else if(characters[characters.length-1] === "K") return parseFloat(x)*1000
+                                else return parseFloat(x)
+                            })
+                            .reduce((a,b) => a+b, 0)/3
+                        )/ttmData.shares_basic
+                        )*((trueGrowthRate/100)+1)
+                        ).toFixed(2)
+                    
+                    const fcfPrice = recentFCFPS
+                    
+                    console.log(trueGrowthRate)
+                    console.log(ourGrowthRate)
+                    console.log(recentFCFPS)
+                    console.log(recentEPS)
+
+                    
+                }
+                findOurPrice();
 
                 // User.findById({userId: `${req.session.userId}`}) 
                 //     .populate()
@@ -495,7 +556,7 @@ router.put('/searchedStock', (req, res) => {
                             console.log(doc)
                             console.log("Original Doc : ",doc)
                             const showAdd = false
-                            res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd 
+                            res.render('pages/show-stock.liquid', { lastSharePrice, tableData, metaData, ttmData, showAdd 
                             })
     
                             // so that the lastPriceViewed in the already added stock has an updated price
@@ -503,7 +564,7 @@ router.put('/searchedStock', (req, res) => {
                         } else {
                             console.log("No schema exists")
                             const showAdd = true
-                            res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd })
+                            res.render('pages/show-stock.liquid', { lastSharePrice, tableData, metaData, ttmData, showAdd })
                         }
                     });
                 }
@@ -516,7 +577,7 @@ router.put('/searchedStock', (req, res) => {
                         console.log(doc)
                         console.log("Original Doc : ",doc)
                         const showAdd = false
-                        res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd 
+                        res.render('pages/show-stock.liquid', { lastSharePrice, tableData, metaData, ttmData, showAdd 
                         })
 
                         // so that the lastPriceViewed in the already added stock has an updated price
@@ -524,7 +585,7 @@ router.put('/searchedStock', (req, res) => {
                     } else {
                         console.log("No schema exists")
                         const showAdd = true
-                        res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd })
+                        res.render('pages/show-stock.liquid', { lastSharePrice, tableData, metaData, ttmData, showAdd })
                     }
                 });
 
