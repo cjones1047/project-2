@@ -480,7 +480,7 @@ router.put('/searchedStock', (req, res) => {
 
                 // console.log(tableData)
 
-                // const ourPrice = 555
+                // ourPrice is the lower of two values: one being the value of a company based on its Free Cash Flow and the other being the value of the same company based on how the market has typically valued its Earnings Per Share
 
                 const findOurPrice = () => {
                     const allGrowthRates = 
@@ -532,16 +532,38 @@ router.put('/searchedStock', (req, res) => {
                         )*((trueGrowthRate/100)+1)
                         ).toFixed(2)
                     
-                    const fcfPrice = recentFCFPS
-                    
-                    console.log(trueGrowthRate)
-                    console.log(ourGrowthRate)
-                    console.log(recentFCFPS)
-                    console.log(recentEPS)
+                    const fcfPrice = () => {
+                        let futureFCF = parseFloat(recentFCFPS)
+                        for(let i=1;i<9;i++) {
+                            futureFCF = futureFCF+
+                                (recentFCFPS*(((ourGrowthRate/100)+1)**i))
+                        }
+                        return parseFloat(futureFCF.toFixed(2))
+                    }
 
+                    const epsPrice = () => {
+                        const currentE = parseFloat(recentEPS)
+                        const fairPrice = (
+                            (
+                            currentE*
+                            (((ourGrowthRate/100)+1)**10)
+                            )*multiple
+                            )/(1.15**10)
+                        const discountedPrice = fairPrice*0.5
+                        return parseFloat(discountedPrice.toFixed(2))
+                    }
                     
+                    // console.log(trueGrowthRate)
+                    // console.log(ourGrowthRate)
+                    // console.log(recentFCFPS)
+                    // console.log(recentEPS)
+                    console.log(`Priced on Cash Flow: ${fcfPrice()}`)
+                    console.log(`Priced on Earnings: ${epsPrice()}`)
+
+                    if(fcfPrice() < epsPrice()) return fcfPrice()
+                    else return epsPrice()
                 }
-                findOurPrice();
+                console.log(findOurPrice())
 
                 // User.findById({userId: `${req.session.userId}`}) 
                 //     .populate()
@@ -556,7 +578,7 @@ router.put('/searchedStock', (req, res) => {
                             console.log(doc)
                             console.log("Original Doc : ",doc)
                             const showAdd = false
-                            res.render('pages/show-stock.liquid', { lastSharePrice, tableData, metaData, ttmData, showAdd 
+                            res.render('pages/show-stock.liquid', { lastSharePrice, tableData, metaData, ttmData, showAdd, ourPrice: findOurPrice()
                             })
     
                             // so that the lastPriceViewed in the already added stock has an updated price
@@ -564,7 +586,7 @@ router.put('/searchedStock', (req, res) => {
                         } else {
                             console.log("No schema exists")
                             const showAdd = true
-                            res.render('pages/show-stock.liquid', { lastSharePrice, tableData, metaData, ttmData, showAdd })
+                            res.render('pages/show-stock.liquid', { lastSharePrice, tableData, metaData, ttmData, showAdd, ourPrice: findOurPrice() })
                         }
                     });
                 }
@@ -577,7 +599,7 @@ router.put('/searchedStock', (req, res) => {
                         console.log(doc)
                         console.log("Original Doc : ",doc)
                         const showAdd = false
-                        res.render('pages/show-stock.liquid', { lastSharePrice, tableData, metaData, ttmData, showAdd 
+                        res.render('pages/show-stock.liquid', { lastSharePrice, tableData, metaData, ttmData, showAdd, ourPrice: findOurPrice() 
                         })
 
                         // so that the lastPriceViewed in the already added stock has an updated price
@@ -585,35 +607,9 @@ router.put('/searchedStock', (req, res) => {
                     } else {
                         console.log("No schema exists")
                         const showAdd = true
-                        res.render('pages/show-stock.liquid', { lastSharePrice, tableData, metaData, ttmData, showAdd })
+                        res.render('pages/show-stock.liquid', { lastSharePrice, tableData, metaData, ttmData, showAdd, ourPrice: findOurPrice() })
                     }
                 });
-
-                // Stock.exists({symbol:`${metaData.symbol}`}, function (err, doc) {
-                //     if (err){
-                //         console.error(err)
-                //     } else if (doc) {
-                //         console.log("Found it")
-
-                //         // so that the lastPriceViewed in the schema of the already added stock has an updated price
-                //         Stock.findOneAndUpdate({symbol: `${metaData.symbol}`}, 
-                //             {lastPriceViewed: lastSharePrice}, function (err, doc) {
-                //             if (err){
-                //                 console.error(err)
-                //             }
-                //             else {
-                //                 console.log("Original Doc : ",doc)
-                //                 const showAdd = false
-                //                 res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd })
-                //             }
-                //         });
-                        
-                //     } else {
-                //         console.log("No schema exists")
-                //         const showAdd = true
-                //         res.render('pages/show-stock.liquid', { lastSharePrice, ourPrice, tableData, metaData, ttmData, showAdd })
-                //     }
-                // });
 
             })
             .catch(err => console.error(err));
