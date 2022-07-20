@@ -4,6 +4,7 @@
 
     <div class="row">
         {% if showAdd == true %}
+            <a href="/title/my-stocks" class="btn btn-info" style="width: 200px; margin: 0 10px; margin-bottom: 30px;">Back to My Stocks</a>
             <form action="/title/my-stocks" method="POST" style="width: fit-content;" >
                 <fieldset class="hidden">
                     <input type="text" class="form-control" name="name" value="{{metaData.name}}">
