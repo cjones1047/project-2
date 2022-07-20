@@ -1,6 +1,5 @@
 const express = require('express')
 const puppeteer = require('puppeteer-extra');
-const chromium = require('chromium');
 // importing Stock model to access database
 const Stock = require('../models/stock.js')
 // making a router
