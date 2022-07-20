@@ -1,5 +1,6 @@
 const express = require('express')
 const puppeteer = require('puppeteer-extra');
+const chromium = require('chromium');
 // importing Stock model to access database
 const Stock = require('../models/stock.js')
 // making a router
@@ -19,7 +20,7 @@ router.put('/searchedStock', (req, res) => {
     const quickfsKey = process.env.QUICKFS_API_KEY
 
     async function scrapeCurrentPrice(priceUrl) {
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch(chromium);
         const page = await browser.newPage();
 
         await page.goto(priceUrl);
