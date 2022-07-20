@@ -65,3 +65,56 @@ form input[type=submit] {
 .nav-txt:hover {
     color: rgb(87, 214, 253);
 }
+
+.is-invalid {
+    animation-name: shake;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+}
+
+.stock-list-item {
+    overflow: hidden;
+    animation-name: fontbulger;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+}
+
+
+
+@keyframes shake {
+    25% {
+        transform:translateX(4px);
+        border: 2px solid rgb(170, 0, 0);
+    }
+    
+    50% {
+        transform:translateX(-4px);
+        border:2px solid rgb(170, 0, 0);
+    }
+    
+    75% {
+        transform:translateX(4px);
+        border:2px solid rgb(170, 0, 0);
+    }
+}
+
+@keyframes slideInFromRight {
+    0% {
+        margin-left: 200%;
+    }
+
+    100% {
+        overflow: hidden;
+        margin-left: 0%;
+    }
+}
+
+@keyframes fontbulger {
+    0%, 100% {
+      font-size: 1rem;
+    }
+    50% {
+      font-size: 1.5rem;
+    }
+  }

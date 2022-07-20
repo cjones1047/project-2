@@ -23,10 +23,11 @@ router.put('/searchedStock', (req, res) => {
     fetch(`https://public-api.quickfs.net/v1/data/all-data/${searchedStock}:US?api_key=${quickfsKey}`)
         .then(response => response.json())
         .then(response => {
-            console.log(response.data)
-            if(response.data == `UnsupportedCompanyError: ${searchedStock.toString()}:US`) {
-                console.log('now in here')
-                res.render('pages/search.liquid')
+            // console.log(response.data)
+            if(response.data == `UnsupportedCompanyError: ${searchedStock.toString()}:US` || response.data.template_type == "bank") {
+                // console.log('now in here')
+                const invalidTicker = true
+                res.render('pages/search.liquid', { invalidTicker })
             } else {
                 async function scrapeCurrentPrice(priceUrl) {
                     const browser = await puppeteer.launch({
