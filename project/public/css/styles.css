@@ -61,3 +61,7 @@ form input[type=submit] {
 .list-group-item:hover {
     cursor: default;
 }
+
+.nav-txt:hover {
+    color: rgb(87, 214, 253);
+}
