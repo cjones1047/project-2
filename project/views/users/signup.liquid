@@ -4,24 +4,33 @@
     <div class="container md">
         <form action="/users/signup" method="POST">
             <fieldset>
-                <legend>New User</legend>
+                <legend>Sign up here</legend>
                 <label class="form-label">Username:</label>
                 <input 
                     type="text" 
                     name="username" 
                     class="form-control"
+                    autocomplete="off"
                 >
+                <div>
+                    &nbsp;
+                </div>
                 <label class="form-label">Password:</label>
                 <input 
                     type="password" 
                     name="password" 
                     class="form-control"
+                    autocomplete="off"
                 >
+                <div>
+                    &nbsp;
+                </div>
             </fieldset>
             <input 
                 type="submit" 
-                value="Create Account" 
-                class="btn btn-success"
+                value="Sign Up" 
+                class="btn btn-primary"
+                style="margin-top: 5px; width: 100px"
             >
         </form>
     </div>

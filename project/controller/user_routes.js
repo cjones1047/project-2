@@ -67,10 +67,15 @@ router.post('/login', async (req, res) => {
                     console.log('this is the session after login', req.session)
                     res.redirect('/title/my-stocks')
                 } else {
-                    res.json({error: 'username or password is incorrect'})
+                    // res.json({error: 'username or password is incorrect'})
+                    const invalidPassword = true
+                    const validUser = username
+                    res.render('users/login.liquid', { invalidPassword, validUser })
                 }
             } else {
-                res.json({error: 'user does not exist'})
+                // res.json({error: 'user does not exist'})
+                const invalidUser = true
+                res.render('users/login.liquid', { invalidUser })
             }
         }) 
         .catch(error => {

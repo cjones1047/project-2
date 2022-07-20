@@ -1,30 +1,109 @@
 {% layout 'layout.liquid' %}
 
 {% block content %}
-    <div class="container md">
-        <form action="/users/login" method="POST">
-            <fieldset>
-                <legend>Welcome back, please log in here</legend>
-                <label class="form-label">Username:</label>
+    <div class="container-md">
+
+        {% if invalidUser == true %}
+            <form action="/users/login" method="POST">
+                <fieldset>
+                    <legend>Welcome back. Please log in here</legend>
+                    <label class="form-label">Username:</label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        class="form-control is-invalid"
+                        autocomplete="off"
+                    >
+                    <div class="invalid-feedback">
+                        Enter valid username
+                    </div>
+                    <label class="form-label">Password:</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        class="form-control is-invalid"
+                        autocomplete="off"
+                    >
+                    <div class="invalid-feedback">
+                        Enter valid password
+                    </div>
+                </fieldset>
                 <input 
-                    type="text" 
-                    name="username" 
-                    class="form-control"
-                    autocomplete="off"
+                    type="submit" 
+                    value="Log In" 
+                    class="btn btn-primary"
+                    style="margin-top: 5px; width: 100px"
                 >
-                <label class="form-label">Password:</label>
+            </form>
+        
+        {% elsif invalidPassword == true %}
+            <form action="/users/login" method="POST">
+                <fieldset>
+                    <legend>Welcome back. Please log in here</legend>
+                    <label class="form-label">Username:</label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        class="form-control"
+                        autocomplete="off"
+                        value="{{validUser}}"
+                    >
+                    <div>
+                        &nbsp;
+                    </div>
+                    <label class="form-label">Password:</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        class="form-control is-invalid"
+                        autocomplete="off"
+                    >
+                    <div class="invalid-feedback">
+                        Enter valid password
+                    </div>
+                </fieldset>
                 <input 
-                    type="password" 
-                    name="password" 
-                    class="form-control"
-                    autocomplete="off"
+                    type="submit" 
+                    value="Log In" 
+                    class="btn btn-primary"
+                    style="margin-top: 5px; width: 100px"
                 >
-            </fieldset>
-            <input 
-                type="submit" 
-                value="Log In" 
-                class="btn btn-success"
-            >
-        </form>
+            </form>
+        
+        {% else %}
+            <form action="/users/login" method="POST">
+                <fieldset>
+                    <legend>Welcome back. Please log in here</legend>
+                    <label class="form-label">Username:</label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        class="form-control"
+                        autocomplete="off"
+                    >
+                    <div>
+                        &nbsp;
+                    </div>
+                    <label class="form-label">Password:</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        class="form-control"
+                        autocomplete="off"
+                    >
+                    <div>
+                        &nbsp;
+                    </div>
+                </fieldset>
+                <input 
+                    type="submit" 
+                    value="Log In" 
+                    class="btn btn-primary"
+                    style="margin-top: 5px; width: 100px"
+                >
+            </form>
+        {% endif %}
+
     </div>
+
 {% endblock %}
