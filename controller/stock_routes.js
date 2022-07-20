@@ -20,7 +20,10 @@ router.put('/searchedStock', (req, res) => {
     const quickfsKey = process.env.QUICKFS_API_KEY
 
     async function scrapeCurrentPrice(priceUrl) {
-        const browser = await puppeteer.launch(chromium);
+        const browser = await puppeteer.launch({
+            headless: true,
+            args: ['--no-sandbox','--disable-setuid-sandbox']
+          })
         const page = await browser.newPage();
 
         await page.goto(priceUrl);
