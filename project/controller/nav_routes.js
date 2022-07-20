@@ -38,15 +38,24 @@ router.delete('/my-portfolios/:id', (req, res) => {
         })
 })
 
-// GET - Home Page
+// GET - Our Way Page
 // localhost:3000/title
-router.get('/', (req, res) => {
+router.get('/our-way', (req, res) => {
     res.render('pages/home.liquid')
 })
 
 // GET - Search Page
 // localhost:3000/title/search-stock
 router.get('/search-stock', (req, res) => {
+    const quickfsKey = process.env.QUICKFS_API_KEY
+    fetch(`https://public-api.quickfs.net/v1/companies/US/NYSE?api_key=${quickfsKey}`)
+        .then(response => response.json())
+        .then(response => {
+            console.log(response)
+            
+        })
+        .catch(err => console.error(err))
+
     res.render('pages/search.liquid')
 })
 

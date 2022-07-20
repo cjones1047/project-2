@@ -26,19 +26,12 @@ router.put('/searchedStock', (req, res) => {
 
         //identify element with attribute selector
         const el1 = await page.$("fin-streamer[class='Fw(b) Fz(36px) Mb(-4px) D(ib)']")
+        if (el1.getProperty('textContent') === null) res.render('/title/search-stock')
         //obtain text
         const el1Text = await (await el1.getProperty('textContent')).jsonValue()
         console.log("Obtained price is: " + el1Text)
 
         const lastSharePrice = el1Text
-
-        // // //identify element with attribute selector
-        // // const el2 = await page.$("table[class='W(100%) M(0)']")
-        // // //obtain text
-        // // const el2Text = await (await el2.getProperty('textContent')).jsonValue()
-        // // console.log("Obtained table is: " + el2Text)
-        
-        // // const priceHx = el2Text (USE priceHx AS TEMPLATE LITERAL FARTHER DOWN)
 
         browser.close()
 
@@ -538,7 +531,7 @@ router.put('/searchedStock', (req, res) => {
                             futureFCF = futureFCF+
                                 (recentFCFPS*(((ourGrowthRate/100)+1)**i))
                         }
-                        return parseFloat(futureFCF.toFixed(2))
+                        return (Math.round(futureFCF * 100) / 100).toFixed(2)
                     }
 
                     const epsPrice = () => {
@@ -550,7 +543,7 @@ router.put('/searchedStock', (req, res) => {
                             )*multiple
                             )/(1.15**10)
                         const discountedPrice = fairPrice*0.5
-                        return parseFloat(discountedPrice.toFixed(2))
+                        return (Math.round(discountedPrice * 100) / 100).toFixed(2)
                     }
                     
                     // console.log(trueGrowthRate)

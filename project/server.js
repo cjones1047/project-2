@@ -62,7 +62,11 @@ app.use('/title/portfolios', portfolioRoutes)
 app.use('/users', userRoutes)
 
 app.get('/', (req, res) => {
-	res.redirect('/title')
+	res.redirect('/title/search-stock')
+})
+
+app.get('/title', (req, res) => {
+	res.redirect('/title/search-stock')
 })
 
 //==============================
