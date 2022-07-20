@@ -38,13 +38,13 @@ router.delete('/my-portfolios/:id', (req, res) => {
         })
 })
 
-// GET - Home Page
-// localhost:3000/title
-router.get('/', (req, res) => {
+// GET - More About Our Way Page
+// localhost:3000/title/our-way
+router.get('/our-way', (req, res) => {
     res.render('pages/home.liquid')
 })
 
-// GET - Search Page
+// GET - Search Page AND Home Page
 // localhost:3000/title/search-stock
 router.get('/search-stock', (req, res) => {
     res.render('pages/search.liquid')
