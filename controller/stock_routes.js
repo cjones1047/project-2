@@ -1,6 +1,6 @@
 const express = require('express')
 const puppeteer = require('puppeteer-extra');
-import 'node-fetch'
+// import 'node-fetch'
 // importing Stock model to access database
 const Stock = require('../models/stock.js')
 // making a router
