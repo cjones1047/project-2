@@ -8,7 +8,7 @@ const stockSchema = new Schema({
     name: String,
     symbol: String,
     lastPriceViewed: Number,
-    ourBuyPrice: Number,
+    ourPrice: Number,
     subindustry: String,
     owner: {
         type: Schema.Types.ObjectId, // a single User ._id

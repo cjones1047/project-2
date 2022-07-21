@@ -9,8 +9,8 @@
                 <fieldset class="hidden">
                     <input type="text" class="form-control" name="name" value="{{metaData.name}}">
                     <input type="text" class="form-control" name="symbol" value="{{metaData.symbol}}">
-                    <input type="number" class="form-control" name="lastPriceViewed" value="{{lastSharePrice}}">
-                    <input type="number" class="form-control" name="ourBuyPrice" value="{{ourPrice}}">
+                    <input type="number" class="form-control" name="lastPriceViewed" value="{{lastSharePrice | round: 2}}">
+                    <input type="number" class="form-control" name="ourPrice" value="{{ourPrice | round: 2}}">
                     <input type="text" class="form-control" name="subindustry" value="{{metaData.subindustry}}">
                 </fieldset>
                 <input type="submit" class="btn btn-secondary" value="Add stock to My Stocks">
@@ -37,7 +37,7 @@
             <h5 class="card-header" style="white-space: nowrap;">
                 What Price We Are Buying At
             <h2 class="card-body">
-                ${{ourPrice}}
+                ${{ourPrice | round: 2}}
             </h2>
         </div>
     </div>
