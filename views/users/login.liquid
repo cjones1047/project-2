@@ -6,25 +6,25 @@
         {% if invalidUser == true %}
             <form action="/users/login" method="POST">
                 <fieldset>
-                    <legend>Welcome back. Please log in here</legend>
-                    <label class="form-label">Username:</label>
+                    <legend style="text-shadow: rgb(0, 213, 255) 1px 0 10px; color: white;">Welcome back. Please log in here</legend>
+                    <label class="form-label" style="text-shadow: rgb(0, 213, 255) 1px 0 10px; color: white;">Username:</label>
                     <input 
                         type="text" 
                         name="username" 
                         class="form-control is-invalid"
                         autocomplete="off"
                     >
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback" style="text-shadow: rgb(0, 213, 255) 1px 0 10px; color: red;">
                         Enter valid username
                     </div>
-                    <label class="form-label">Password:</label>
+                    <label class="form-label" style="text-shadow: rgb(0, 213, 255) 1px 0 10px; color: white;">Password:</label>
                     <input 
                         type="password" 
                         name="password" 
                         class="form-control is-invalid"
                         autocomplete="off"
                     >
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback" style="text-shadow: rgb(0, 213, 255) 1px 0 10px; color: red;">
                         Enter valid password
                     </div>
                 </fieldset>
@@ -32,15 +32,15 @@
                     type="submit" 
                     value="Retry" 
                     class="btn btn-secondary"
-                    style="margin-top: 5px; width: 100px"
+                    style="margin-top: 5px; width: 100px;"
                 >
             </form>
         
         {% elsif invalidPassword == true %}
             <form action="/users/login" method="POST">
                 <fieldset>
-                    <legend>Welcome back. Please log in here</legend>
-                    <label class="form-label">Username:</label>
+                    <legend style="text-shadow: rgb(0, 213, 255) 1px 0 10px; color: white;">Welcome back. Please log in here</legend>
+                    <label class="form-label" style="text-shadow: rgb(0, 213, 255) 1px 0 10px; color: white;">Username:</label>
                     <input 
                         type="text" 
                         name="username" 
@@ -51,14 +51,14 @@
                     <div>
                         &nbsp;
                     </div>
-                    <label class="form-label">Password:</label>
+                    <label class="form-label" style="text-shadow: rgb(0, 213, 255) 1px 0 10px; color: white;">Password:</label>
                     <input 
                         type="password" 
                         name="password" 
                         class="form-control is-invalid"
                         autocomplete="off"
                     >
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback" style="text-shadow: rgb(0, 213, 255) 1px 0 10px; color: red;">
                         Enter valid password
                     </div>
                 </fieldset>
@@ -66,15 +66,15 @@
                     type="submit" 
                     value="Retry" 
                     class="btn btn-secondary"
-                    style="margin-top: 5px; width: 100px"
+                    style="margin-top: 5px; width: 100px;"
                 >
             </form>
         
         {% else %}
             <form action="/users/login" method="POST">
                 <fieldset>
-                    <legend>Welcome back. Please log in here</legend>
-                    <label class="form-label">Username:</label>
+                    <legend style="text-shadow: rgb(0, 213, 255) 1px 0 10px; color: white;">Welcome back. Please log in here</legend>
+                    <label class="form-label" style="text-shadow: rgb(0, 213, 255) 1px 0 10px; color: white;">Username:</label>
                     <input 
                         type="text" 
                         name="username" 
@@ -84,7 +84,7 @@
                     <div>
                         &nbsp;
                     </div>
-                    <label class="form-label">Password:</label>
+                    <label class="form-label" style="text-shadow: rgb(0, 213, 255) 1px 0 10px; color: white;">Password:</label>
                     <input 
                         type="password" 
                         name="password" 
@@ -99,7 +99,7 @@
                     type="submit" 
                     value="Log In" 
                     class="btn btn-secondary"
-                    style="margin-top: 5px; width: 100px"
+                    style="margin-top: 5px; width: 100px;"
                 >
             </form>
         {% endif %}

@@ -1,14 +1,16 @@
 body {
-    background-color: whitesmoke;
+    background-size: cover 100vh;
+    background-attachment: fixed;
+    background-image: url('../assets/finance-background.jpeg');
+    
 }
 
 main {
-    margin-top: 90px;
+    margin-top: 120px;
 }
 
 .navbar-brand {
     margin-left: 30px;
-    margin-right: 50px;
 }
 
 .navbar-nav {
@@ -33,6 +35,8 @@ table.table {
     border-style: solid;
     border-color: rgb(126, 126, 126);
     border-width: 7px;
+    color: whitesmoke;
+    background-color: rgb(64, 64, 64);
 }
 
 .thead-dark {
@@ -48,6 +52,7 @@ table tbody tr th {
     margin: 10px;
     width: 18rem;
     text-align: center;
+    box-shadow: 12px 15px 15px rgb(0, 0, 0);
 }
 
 fieldset.hidden {
@@ -75,9 +80,13 @@ form input[type=submit] {
 .stock-list-item {
     overflow: hidden;
     animation-name: fontbulger;
-    animation-duration: 0.5s;
+    animation-duration: 0.3s;
     animation-iteration-count: 1;
-    animation-timing-function: ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #5cd4ea;
+    box-shadow: 0 0 0 0.2rem #2bc8e4;
 }
 
 
