@@ -89,6 +89,10 @@ form input[type=submit] {
     box-shadow: 0 0 0 0.2rem #2bc8e4;
 }
 
+#search-gif {
+    display: default;
+}
+
 
 
 @keyframes shake {
