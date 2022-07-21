@@ -14,8 +14,6 @@
     - Profile component of navbar is a collapsible menu button so that:
         - 1) A user definitely sees it compared to the rest of the nav-bar hyperlinks
         - 2) It doesn't take up unnecessary space in the navbar if a user doesn't want to log in
-![general page layout](/planning/wireframes/expanded-menu.png)
-![general page layout](/planning/wireframes/collapsed.png)
 - Navbar items (each of which color blue on hovering):
     - Stockpile (just a title, no functionality)
     - More about our way
@@ -25,55 +23,26 @@
         - This last part is the icing on the cake (or pie, or whatever). What if you have 20 lemonade stands all willing to sell you their entire company for less than 8 years of their profits and you could only afford to buy 5 of them? Well, you just pick the top 5 that give you the most bang for your buck. More specifically, buy the 5 giving you the most profit for every dollar you pay. This process of buying 5 profitable companies that are all on sale for a great price is what's called "diversification". Basically, if one of the companies has a run of bad luck you still got 4 great ones to more than cover you.
         - We hope you enjoy using the tools in Stockpile to help you find those 5 great businesses to build your financial future on. Happy hunting.
         - Casey Jones"
-        ![](/planning/wireframes/our-way.png)
     - My Stocks
         - Each stock shows up as a bootstrapped card with the name of a company, a short decription of a company, a button that says "View" which will submit a put request for a "show-stock" (show-stock.liquid) page, a delete button, the price of the stock the last time you viewed it, and our recommendation for the appropriate buy price when a user added it to the my-stocks page
-        ![](/planning/wireframes/my-stocks.png)
         - Show page includes a wealth of data (also accessed by the "Search Any Stock" navbar link and searching the stock):
-            - Button for "Remove From My Stocks" in the upper-right-hand corner of the screen
+            - Buttons for "Add to My Stocks" (if hasn't already been added) and "Back to My Stocks"
             - Stock's name and ticker
-            - Unordered list of which appear from a user standpoint to be key: value pairs pulled from the company's most recent 10-Q (quarterly report), including but not limited to (STRETCH GOAL: hovering over 'keys' will show an info box describing the metric you are hovering over, since I can't even remember what all these metrics mean or how they are calculated all the time):
-                - Description (more thorough than on "My Stocks" but still pulled from company's most recent 10-K): [string]
-                - Last close: [number]
-                - Market Capitalization : [number]
-                - Trading Volume After Last Close: [number]
-                - Dividend Yield [number]
-                - Earnings Per Share: [number]
-                - Price To Earnings Ratio: [number]
-                - Free Cash Flow Per Share: [number]
-                - Price to FCF Ratio: [number]
-                - etc....
-            - A table with three hyperlinks at the top (maybe built into the top row of the table to look like a navbar?) saying "Income Statement", "Balance Sheet", and "Cash Flow Statement"
-                - This one table is the meat and potatoes of the entire app to me
-                - This table can switch between viewing a company's Income Statement (selected when opening show page by default), Balance Sheet, or Cash Flow Statement by switching on each different hyperlink in the top row of the table
-                - The second row of the table will be a list of column headers to show the last 10 years of annual reports from (left to right) oldest to newest with 6 additional columns appended to the end of the most recent year's row displaying headers of (again, left to right):
-                    - 1) Last 12 Months (compiled using a company's last 4 10-Qs or 'quarterly reports')
-                        - Important that the last 12 months of a company's reported numbers are relatively in-line with the last annual report or 10-K's numbers
-                        - If they are not, that alludes to a company possibly sprucing up their annual reports too much
-                    - 2) 10YrCAGR (Compounded Annual Growth Rate)
-                    - 3) 8YrCAGR
-                    - 4) 6YrCAGR
-                    - 5) 4YrCAGR
-                    - 6) 2YrCAGR
-                - Second row and every row after it will have a total of 16 columns, and 
-                    - Some rows may have data like company expenses be negative which is totally ok, don't know if I want to color them red yet since I don't want anyone to think "danger" just because a company has expenses
-                ![](/planning/wireframes/show-page.png)
+            - Most recent market price
+            - A table of relevant financial data and metrics spanning back the last 10 years plus the TTM (trailing twelve months, when available), with metrics that aren't already percentages showing CAGRs (Compounded Annual Growth Rates)
+            - Description with header that specifies the sub-industry of the stock
     - My Portfolios
-        - Looks like the my-stocks page just without the logo present on each individual stock on my-stocks page
-        ![](/planning/wireframes/my-portfolios.png)
-    - Search any stock
+        - Looks similar to my-stocks page but just lists all created portfolios
+    - Search Any stock
         - Will show a search bar upon navigation to page (a form) to enter any company on the stock market's name or ticker (like Apple's ticker is AAPL)
             - STRETCH GOAL: search bar will suggest a stock's ticker and name based on every character a user inputs into the form input
-        - Just a text input field and a submit button to go with it
-        ![](/planning/wireframes/search-page.png)
+        - Just a text input field and a submit button to go with it, and a little search animation
         - After entering a stock's name or ticker, you will just go to the same 'show' page detailed above EXCEPT:
-            - Button for "Add to My Stocks" in the upper-right-hand corner of the screen is changed to say "Remove From My Stocks" based on whether you already added this stock to your "My Stocks" or not
-    - Backtesting
-        - Takes the company's listed in "My Stocks" and with a form with just 2 inputs, shows how your stocks would have done between the dates specified in each input field
-        ![](/planning/wireframes/backtesting-page.png)
-    - [login status]
-        - if not logged in, will show "Log In" followed by "Sign Up" to give new users a chance to sign up and give old users a chance to log back in
-        - if logged in, will show the user's username followed by "Log Out"
+            - Button for "Add to My Stocks" in the upper-left-hand corner of the screen is removed to just say "Back to My Stocks" based on whether you already added this stock to your my-stocks page or not
+    - My Profile (dropdown menu) that shows following options:
+        - Log In
+        - Sign Up
+        - Log Out
 - More stretch goals:
     - Have a backtesting page to backtest any given portfolio or stock over time
     - Have a stock price chart provide a render animation over the backtesting time period selected
@@ -102,17 +71,20 @@
 ## Route Table
 
 |   NAME   |     PATH       |   HTTP VERB     |            PURPOSE                   |
-|----------|----------------|-----------------|--------------------------------------| 
-| Index    | /title/our-way      |       GET       | Displays our-way page           |
-| New      | /title/my-portfolios/new |       GET       | Shows form for new portfolio creation |
-| Show     | /title/my-portfolios |       GET       | Shows my portfolios             |
-| Show     | /title/my-stocks    |     GET         | Shows my stocks                 |
-| Show     | /title/my-portfolios/:id |       GET        | Shows one portfolio from my-portfolios |
-| Show     | /title/my-stocks/:id |       GET       | Shows one stock from my-stocks or from an individual portfolio |
-| Show     | /title/backtesting |       GET         | Shows backtesting page          |
-| Edit     | /title/my-portfolios/:id/edit |       GET        | Shows edit page for one portfolio where you can add or delete stocks from a portfolio |
-| Create   | /title/my-stocks    |      POST       | Adds a new stock to the my-stocks page from the search-stocks page |
-| Create   | /title/my-portfolios |      POST       | Adds a new portfolio to the my-portfolios page from the my-portfolios/new page |
-| Destroy  | /title/my-portfolios/:id |      DELETE     | Deletes an entire portfolio |
-| Destroy  | /title/my-stocks/:id |     DELETE      | Deletes a stock from my-stocks |
-| Update   | /title/my-portfolios/:id |      PUT        | Adds or removes a stock from a single portfolio |
+|----------|----------------|-----------------|--------------------------------------|
+| Destroy | /title/my-stocks/:id | DELETE | Removes stock from My stocks
+| Destroy | /title/my-portfolios/:id | DELETE | Removes portfolio
+| Show | /title/our-way | GET | Shows how we look at stocks
+| Index | /title/my-stocks | GET | Index of all my stocks
+| Index | /title/my-portfolios | GET | Index of all my portfolios
+| Create | /title/my-stocks | POST | Adds a stock to My Stocks
+| Create | /title/my-portfolios | POST | Adds a portfolio to My Portfolios
+| Show | /title//title/stocks/searchedStock?_method=PUT | PUT | Shows any stock searched or viewed from My Stocks page
+| New | /title/portfolios/new | GET | Create a new portfolio from this page
+| Update | /title/portfolios/:portfolioId | POST | Add a new entry to a portfolio
+| Edit | /title/portfolios/:id | GET | Opens up a portfolio to edit
+| Destroy | /title/:portfolioId/:allocationId | DELETE | Remove a previous entry from a portfolio
+| Show | /users/login | GET | Get a login page
+| Show | /users/signup | GET | Gets a page to add a new user to database
+| Create | /users/signup | POST | Adds a new user to database
+| Show | /users/logout | GET | Calls for destruction of session
