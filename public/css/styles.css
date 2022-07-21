@@ -1,8 +1,7 @@
 body {
-    background-size: cover 100vh;
-    background-attachment: fixed;
-    background-image: url('../assets/finance-background.jpeg');
-    
+    /* background-size: cover 100vh;
+    background-attachment: fixed; */
+    background: url('../assets/finance-background.jpeg') no-repeat center center fixed;
 }
 
 main {

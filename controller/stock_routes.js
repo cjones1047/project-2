@@ -44,7 +44,7 @@ router.put('/searchedStock', (req, res) => {
                     const el1Text = await (await el1.getProperty('textContent')).jsonValue()
                     console.log("Obtained price is: " + el1Text)
             
-                    const lastSharePrice = el1Text
+                    const lastSharePrice = parseFloat(el1Text)
             
                     browser.close()
             
@@ -585,7 +585,7 @@ router.put('/searchedStock', (req, res) => {
                                         console.log(doc)
                                         console.log("Original Doc : ",doc)
                                         const showAdd = false
-                                        res.render('pages/show-stock.liquid', { lastSharePrice, tableData, metaData, ttmData, showAdd, ourPrice: findOurPrice()
+                                        res.render('pages/show-stock.liquid', { lastSharePrice: lastSharePrice.toFixed(2), tableData, metaData, ttmData, showAdd, ourPrice: findOurPrice()
                                         })
                 
                                         // so that the lastPriceViewed in the already added stock has an updated price
@@ -593,7 +593,7 @@ router.put('/searchedStock', (req, res) => {
                                     } else {
                                         console.log("No schema exists")
                                         const showAdd = true
-                                        res.render('pages/show-stock.liquid', { lastSharePrice, tableData, metaData, ttmData, showAdd, ourPrice: findOurPrice() })
+                                        res.render('pages/show-stock.liquid', { lastSharePrice: lastSharePrice.toFixed(2), tableData, metaData, ttmData, showAdd, ourPrice: findOurPrice() })
                                     }
                                 });
                             }
@@ -606,7 +606,7 @@ router.put('/searchedStock', (req, res) => {
                                     console.log(doc)
                                     console.log("Original Doc : ",doc)
                                     const showAdd = false
-                                    res.render('pages/show-stock.liquid', { lastSharePrice, tableData, metaData, ttmData, showAdd, ourPrice: findOurPrice() 
+                                    res.render('pages/show-stock.liquid', { lastSharePrice: lastSharePrice.toFixed(2), tableData, metaData, ttmData, showAdd, ourPrice: findOurPrice() 
                                     })
             
                                     // so that the lastPriceViewed in the already added stock has an updated price
@@ -614,7 +614,7 @@ router.put('/searchedStock', (req, res) => {
                                 } else {
                                     console.log("No schema exists")
                                     const showAdd = true
-                                    res.render('pages/show-stock.liquid', { lastSharePrice, tableData, metaData, ttmData, showAdd, ourPrice: findOurPrice() })
+                                    res.render('pages/show-stock.liquid', { lastSharePrice: lastSharePrice.toFixed(2), tableData, metaData, ttmData, showAdd, ourPrice: findOurPrice() })
                                 }
                             });
             

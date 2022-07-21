@@ -45,10 +45,10 @@
                         </p>
                         <p class="card-text">
                             <br>
-                            <b>Last Price Viewed:</b> {{stock.lastPriceViewed}}
+                            <b>Price When Added:</b> {{stock.lastPriceViewed | round: 2 }}
                         </p>
                         <div class="card-text" style="border: solid 2px rgb(100, 100, 100); border-radius: 15px; padding: 5px; height: fit-content; margin: 0 auto;">
-                            <b>Our Buy Price (when added): {{stock.ourPrice}} </b>
+                            <b>Our Buy Price (when added): {{ stock.ourPrice | round: 2 }} </b>
                         </div>
                     </div>
                 </div>
