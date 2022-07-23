@@ -1,6 +1,6 @@
 /* Mobile first */
 body {
-    background: url('../assets/finance-background.jpeg') no-repeat center 100vh fixed; 
+    background: url('../assets/finance-background.jpeg') no-repeat 100vh center fixed; 
 }
 
 /* Then tablets, laptops and desktops (768px and up) */
