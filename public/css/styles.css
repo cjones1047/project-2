@@ -1,8 +1,10 @@
 /* Mobile first */
 body {
-    background-image: url('../assets/finance-background.jpeg');
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+    background: url(images/bg.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 /* Then tablets, laptops and desktops (768px and up) */
