@@ -22,22 +22,41 @@ router.get('/signup', (req, res) => {
 // one POST to make the db request
 router.post('/signup', async (req, res) => {
     console.log('this is our initial request body:', req.body)
-    req.body.password = await bcrypt.hash(
+    const usernameLength = req.body.username.toString().length
+    console.log('username length:', usernameLength)
+    const passwordLength = req.body.password.toString().length
+    console.log('password length:', passwordLength)
+
+    if(usernameLength < 8) {
+        console.log("Username minimum: 8 characters")
+        const usernameShort = true
+        res.render('users/signup.liquid', {usernameShort})
+
+    } else if(passwordLength < 8) {
+        console.log("Password minimum: 8 characters")
+        const attemptedUsername = req.body.username.toString()
+        const passwordShort = true
+        res.render('users/signup.liquid', {passwordShort, attemptedUsername})
+
+    } else {
+        req.body.password = await bcrypt.hash(
         req.body.password,
         await bcrypt.genSalt(10)
-    )
-
-    // now that our password is hashed, we can create a user
-    console.log('this is our request body AFTER hashing:', req.body)
-    User.create(req.body)
-        .then(user => {
-            console.log('this is the new user', user)
-            res.redirect('/users/login')
-        })
-        .catch(error => {
-            console.log(error)
-            res.json(error)
-        })
+        )
+        // now that our password is hashed, we can create a user
+        console.log('this is our request body AFTER hashing:', req.body)
+        User.create(req.body)
+            .then(user => {
+                console.log('this is the new user', user)
+                res.redirect('/users/login')
+            })
+            .catch(error => {
+                console.log(error)
+                // res.json(error)
+                const userAlreadyExists = true
+                res.render('users/signup.liquid', {userAlreadyExists})
+            })
+    }
 })
 
 // two login routes

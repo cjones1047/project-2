@@ -6,27 +6,76 @@
             <fieldset>
                 <legend style="text-shadow: rgb(0, 213, 255) 1px 0 10px; color: white;">Sign up here</legend>
                 <label class="form-label" style="text-shadow: rgb(0, 213, 255) 1px 0 10px; color: white;">Username:</label>
-                <input 
+                {% if userAlreadyExists == true %}
+                    <input 
+                    type="text" 
+                    name="username" 
+                    class="form-control is-invalid"
+                    autocomplete="off"
+                    required
+                    >
+                    <div class="invalid-feedback" style="text-shadow: rgb(255, 126, 169) 1px 0 10px; color: rgb(255, 126, 169);">
+                        Username already exists
+                    </div>
+                {% elsif usernameShort == true %}
+                    <input 
+                    type="text" 
+                    name="username" 
+                    class="form-control is-invalid"
+                    autocomplete="off"
+                    required
+                    >
+                    <div class="invalid-feedback" style="text-shadow: rgb(255, 126, 169) 1px 0 10px; color: rgb(255, 126, 169);">
+                        Username minimum: 8 characters
+                    </div>
+                {% elsif passwordShort == true %}
+                    <input 
+                    type="text" 
+                    name="username" 
+                    class="form-control"
+                    autocomplete="off"
+                    value="{{attemptedUsername}}"
+                    required
+                    >
+                    <div>
+                        &nbsp;
+                    </div>
+                {% else %}
+                    <input 
                     type="text" 
                     name="username" 
                     class="form-control"
                     autocomplete="off"
                     required
-                >
-                <div>
-                    &nbsp;
-                </div>
+                    >
+                    <div>
+                        &nbsp;
+                    </div>
+                {% endif %}
                 <label class="form-label" style="text-shadow: rgb(0, 213, 255) 1px 0 10px; color: white;">Password:</label>
-                <input 
+                {% if passwordShort == true %}
+                    <input 
+                    type="password" 
+                    name="password" 
+                    class="form-control is-invalid"
+                    autocomplete="off"
+                    required
+                    >
+                    <div class="invalid-feedback" style="text-shadow: rgb(255, 126, 169) 1px 0 10px; color: rgb(255, 126, 169);">
+                        Password minimum: 8 characters
+                    </div>
+                {% else %}
+                    <input 
                     type="password" 
                     name="password" 
                     class="form-control"
                     autocomplete="off"
                     required
-                >
-                <div>
-                    &nbsp;
-                </div>
+                    >
+                    <div>
+                        &nbsp;
+                    </div>
+                {% endif %}
             </fieldset>
             <input 
                 type="submit" 
