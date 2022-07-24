@@ -2,13 +2,13 @@
 
 {% block content %}
     
-        <form action="/title/stocks/searchedStock?_method=PUT" method="POST" class="row justify-content-center">
+        <form action="/title/stocks/searchedStock?_method=PUT" method="POST" class="row justify-content-center" onsubmit="return whileSearching()">
             <fieldset style="max-width: 600px; margin-top: 20px;">
                 {% if invalidTicker == true %}
                     <input 
                         type="text" 
                         name="stock" 
-                        placeholder="enter any stock's ticker here" 
+                        placeholder="enter any stock's ticker here..." 
                         class="form-control is-invalid"
                         style="font-size: 20px;"
                         required
@@ -20,21 +20,43 @@
                     <input 
                         type="text" 
                         name="stock" 
-                        placeholder="enter any stock's ticker here" 
+                        placeholder="enter any stock's ticker here..." 
                         class="form-control"
                         style="font-size: 20px;"
                         required
                     >
                 {% endif %}    
             </fieldset>
-            <div class="row btn-group" style="width: 150px; margin-top: 20px;">
+            <div id="search-button" class="row btn-group" style="width: 150px; margin-top: 20px;">
                 <input type="submit" value="GO" class="btn btn-secondary" style="font-size: 20px;">
             </div>
-            
         </form>
 
-        <div style="width: 100%; text-align: center;" >
-            <img src="/assets/search-animation.gif" alt="searching..." style="width: 300px; height: 300px; border-radius: 30px;" id="search-gif">
+        <div id="search-animation" style="width: 100%; text-align: center;" class="hidden">
+            <img src="/assets/search-animation.gif" alt="searching..." style="width: 500px; height: 150px; border-radius: 30px; object-fit: none; object-position: 57% 49%; max-width: 100%;" id="search-gif">
         </div>
+
+        <script defer>
+            // document.getElementById('search-button').addEventListener('click', (event) => {
+            //     event.preventDefault()
+            //     document.getElementById('search-animation').style.display = 'none';
+            // })
+            function whileSearching () {
+                // document.getElementById('search-animation').style.display = 'default'
+                // document.getElementById('search-animation').classList.toggle('hidden')
+                $('form').toggleClass('faded')
+                setTimeout(() => {
+                    $('#search-animation').removeClass('hidden')
+                    $('#search-animation').toggleClass('pop-out-from-hidden');
+                }, 500)
+                // $('#search-animation').toggleClass('pop-out-from-hidden')
+
+                return true
+            }
+            // $('#search-form').on('submit', function () {
+            //     alert('Form submitted!');
+            //     return false;
+            // });
+        </script>
 
 {% endblock %}
