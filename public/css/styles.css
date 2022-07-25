@@ -129,6 +129,10 @@ form input[type=submit] {
     animation: fadingOut 0.5s forwards;
 }
 
+#search-animation {
+    
+}
+
 
 
 @keyframes shake {
